@@ -1,5 +1,10 @@
 package com.example.demo.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entity.MessageResponse;
 import com.example.demo.entity.RefreshToken;
-import com.example.demo.entity.TokenRefreshRequest;
+import com.example.demo.entity.TokenRefreshResponse;
+import com.example.demo.entity.User;
 import com.example.demo.entity.UserInfoResponse;
 import com.example.demo.security.config.JwtUtils;
 import com.example.demo.service.RefreshTokenService;
 import com.example.demo.service.UserDetailsImpl;
 import com.example.demo.service.UserService;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -32,31 +36,34 @@ import jakarta.validation.Valid;
 public class AuthController {
 	@Autowired
 	AuthenticationManager authenticationManager;
+	
 	@Autowired
 	PasswordEncoder encoder;
+	
 	@Autowired
 	JwtUtils jwtUtils;
+	
 	@Autowired
 	RefreshTokenService refreshTokenService;
+	
 	@Autowired
 	UserService userService;
 	
-//	@PostMapping("/signup")
-//	public ResponseEntity<MessageResponse> saveDeveloper(@RequestBody UserDTO user) {
-//		
-//		if (userService.existsByUsername(user.getUsername())) {
-//		      return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
-//		    }
-//
-//		userService.saveDeveloper(user);
-//
-//		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-//
-//	}
-	
-	
 	@PostMapping("/signup")
-	public ResponseEntity authenticateUser(@Valid@RequestBody UserDTO userDTO) {
+	public ResponseEntity<MessageResponse> saveDeveloper(@RequestBody User user) {
+		
+		if (userService.existsByUsername(user.getUsername())) {
+		      return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
+		    }
+
+		userService.saveUser(user);
+		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+
+	}
+	
+	
+	@PostMapping("/signin")
+	public ResponseEntity<UserInfoResponse> authenticateUser(@Valid@RequestBody UserDTO userDTO) {
 		
 		Authentication authentication = authenticationManager
 		        .authenticate(new UsernamePasswordAuthenticationToken(userDTO.getUsername(), userDTO.getPassword()));
@@ -69,18 +76,20 @@ public class AuthController {
                 userDetails.getUsername(),jwt));
 	}
 	@PostMapping("/refreshtoken")
-	public ResponseEntity refreshToken(@Valid@RequestBody TokenRefreshRequest tokenRefreshRequest) {
-		String requestRefreshToken=tokenRefreshRequest.getRefreshToken();
-		return refreshTokenService.findByToken(requestRefreshToken)
-				 .map(requestRefreshToken::verifyExpiration)
-		        .map(RefreshToken::getUser)
-		        .map(user -> {
-		          String token = jwtUtils.generateTokenFromUsername(user.getUsername());
-		          return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
-		        })
-		        .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
-		            "Refresh token is not in database!"));
-		  }
+	public ResponseEntity<?> refreshtoken(@RequestBody Map<String, String> refreshToken) {
+		RefreshToken token = refreshTokenService.findByToken(refreshToken.get("token"));
+		
+		if(token != null && refreshTokenService.verifyExpiration(token) != null) {
+			User user = token.getUser();
+			Map<String, Object> claims = new HashMap<>();
+			//claims.put("ROLES", user.getRoles().stream().map(item -> item.getRole()).collect(Collectors.toList()));
+			String jwt = jwtUtils.createToken(claims, user.getUsername());
+			
+			return ResponseEntity.ok(new TokenRefreshResponse("Bearer", jwt, refreshToken.get("token")));
+		}
+		
+		return ResponseEntity.badRequest().body("Refresh token expired!");
+	}
 	
 	
 	@PostMapping("/signout")

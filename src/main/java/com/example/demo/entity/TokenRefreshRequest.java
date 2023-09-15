@@ -2,7 +2,8 @@ package com.example.demo.entity;
 
 import java.time.Instant;
 
-import jakarta.validation.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
+
 import lombok.Data;
 
 @Data

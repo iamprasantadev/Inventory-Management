@@ -2,16 +2,22 @@ package com.example.demo.entity;
 
 import java.time.Instant;
 
-import org.springframework.data.annotation.Id;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+
+
 import lombok.Data;
 
 @Data
-@Entity(name="refreshtoken")
+@Entity
+@Table(name="refreshtoken")
 public class RefreshToken {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,10 +28,11 @@ public class RefreshToken {
 	 
 	 @Column(nullable = false)
 	 private Instant expiryDate;
+	 
+	 @OneToOne
+		@JoinColumn(name = "userid", referencedColumnName = "userid")
+		private User user;
 
-	public Object map(Object object) {
-		
-		return null;
-	}
+	
 
 }
