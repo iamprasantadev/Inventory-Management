@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Rolesdto {
-	private Integer id;
+	private Integer roleid;
 	private String title;
 	private String description;
 	private Integer active;

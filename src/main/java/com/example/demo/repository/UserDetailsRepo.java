@@ -11,6 +11,6 @@ public interface UserDetailsRepo extends CrudRepository<UserDetails,Integer>,Jpa
 	
 	UserDetails findByEmail(String email);
 	
-	UserDetails  findByResetpasswordtoken(String resetpasswordtoken);
+	
 
 }
