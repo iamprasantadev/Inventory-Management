@@ -107,16 +107,16 @@ public class JwtUtils {
 				.signWith(key(), SignatureAlgorithm.HS256).compact();
 	}
 	
-	public String createToken(Map<String, Object> claims, String subject) {
-		return Jwts.builder()
-				.setClaims(claims)
-				.setSubject(subject)
-				.setIssuedAt(new Date((new Date()).getTime()))
-				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-				.signWith(SignatureAlgorithm.HS256, jwtSecret)
-				.compact();
-	}
-	
+//	public String createToken(Map<String, Object> claims, String subject) {
+//		return Jwts.builder()
+//				.setClaims(claims)
+//				.setSubject(subject)
+//				.setIssuedAt(new Date((new Date()).getTime()))
+//				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+//				.signWith(SignatureAlgorithm.HS256, jwtSecret)
+//				.compact();
+//	}
+//	
 
 
 }

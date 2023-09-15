@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.UserDTO;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepo;
 

@@ -75,21 +75,21 @@ public class AuthController {
 		return ResponseEntity.ok().body( new UserInfoResponse(userDetails.getUserid(),
                 userDetails.getUsername(),jwt));
 	}
-	@PostMapping("/refreshtoken")
-	public ResponseEntity<?> refreshtoken(@RequestBody Map<String, String> refreshToken) {
-		RefreshToken token = refreshTokenService.findByToken(refreshToken.get("token"));
-		
-		if(token != null && refreshTokenService.verifyExpiration(token) != null) {
-			User user = token.getUser();
-			Map<String, Object> claims = new HashMap<>();
-			//claims.put("ROLES", user.getRoles().stream().map(item -> item.getRole()).collect(Collectors.toList()));
-			String jwt = jwtUtils.createToken(claims, user.getUsername());
-			
-			return ResponseEntity.ok(new TokenRefreshResponse("Bearer", jwt, refreshToken.get("token")));
-		}
-		
-		return ResponseEntity.badRequest().body("Refresh token expired!");
-	}
+//	@PostMapping("/refreshtoken")
+//	public ResponseEntity<?> refreshtoken(@RequestBody Map<String, String> refreshToken) {
+//		RefreshToken token = refreshTokenService.findByToken(refreshToken.get("token"));
+//		
+//		if(token != null && refreshTokenService.verifyExpiration(token) != null) {
+//			User user = token.getUser();
+//			Map<String, Object> claims = new HashMap<>();
+//			//claims.put("ROLES", user.getRoles().stream().map(item -> item.getRole()).collect(Collectors.toList()));
+//			String jwt = jwtUtils.createToken(claims, user.getUsername());
+//			
+//			return ResponseEntity.ok(new TokenRefreshResponse("Bearer", jwt, refreshToken.get("token")));
+//		}
+//		
+//		return ResponseEntity.badRequest().body("Refresh token expired!");
+//	}
 	
 	
 	@PostMapping("/signout")
@@ -97,6 +97,8 @@ public class AuthController {
 		ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
 		return ResponseEntity.ok().body(cookie.toString());
 	}
+	
+	 
 	}
 
 

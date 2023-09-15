@@ -4,6 +4,7 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.example.demo.dto.UserDTO;
 import com.example.demo.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,10 +32,9 @@ public class UserDetailsImpl implements UserDetails{
 ////		        .map(role -> new SimpleGrantedAuthority(role.getName().name()))
 ////		        .collect(Collectors.toList());
 //
-		    return new UserDetailsImpl(
-	    	user.getUserid(),
-		        user.getUsername(), 
-	        user.getPassword()
+		    return new UserDetailsImpl(user.getUserid(),
+		    		user.getUsername(), 
+		    		user.getPassword()
 		       );
 		  }
 

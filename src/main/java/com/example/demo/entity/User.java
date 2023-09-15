@@ -21,11 +21,26 @@ public class User {
 	private Integer userid;
 	private String username;
 	private String password;
-	//private LocalDateTime lastlogin;
+	private LocalDateTime lastlogin;
+	
+	
+	
+	
+	
 	
 	 @OneToOne
-		@JoinColumn(name = "userid", referencedColumnName = "userid")
-		private UserDetails user;
+     @JoinColumn(name="id")
+     private UserDetails userdetail;
+	 
+	 @OneToOne
+	 @JoinColumn(name="questionid")
+	 private SecurityQuestion question;
+	 
+	 @OneToOne
+	 @JoinColumn(name="answerid")
+	 private SecurityAnswer answer;
+	 
+	 
 	
 
 }
