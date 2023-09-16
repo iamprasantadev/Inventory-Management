@@ -111,9 +111,9 @@ public class AuthController {
 
 	}
 	
-	@PostMapping("/forget")
-	public ResponseEntity<UUID> forgetPassword(UserDTO userDTO) {
-	UUID generatedUuid=userService.forgetpassword(userDTO);
+	@PostMapping("/forgotpassword")
+	public ResponseEntity<UUID> forgotPassword(@RequestBody UserDTO userDTO) {
+	UUID generatedUuid=userService.forgotpassword(userDTO);
 	return new ResponseEntity<UUID>(generatedUuid,HttpStatus.OK);
 	 
 

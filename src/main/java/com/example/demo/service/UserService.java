@@ -36,7 +36,7 @@ public class UserService {
 
 	 
 	 
-	 public UUID forgetpassword(UserDTO userDTO) {
+	 public UUID forgotpassword(UserDTO userDTO) {
 		 Optional<User> userOptional=Optional.ofNullable(userRepo.findByUsername(userDTO.getUsername()));
 		 if(userOptional.isPresent()) {
 			 User user=userOptional.get();
@@ -56,12 +56,14 @@ public class UserService {
 			 UUID previousUUID=user.getCode();
 			 String currentUUID=userDTO.getCode();
 			 
-			 if(previousUUID != null && previousUUID.equals(currentUUID)) {
-				 user.setPassword(passwordEncoder.encode(user.getPassword()));
+			 if(previousUUID != null && previousUUID.toString().equals(currentUUID.toString())) {
+				 user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 				 userRepo.save(user);
 			 }
 		 }
 	 }
+
+	
 	    }
 
 	
