@@ -1,11 +1,13 @@
 package com.example.demo.service;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.UserDTO;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepo;
 @Service
@@ -30,23 +32,40 @@ public class UserService {
 	        return userRepo.save(user);
 	    }
 	 
-//	 public String resetPassword(Long userId, String answer, String newPassword) {
-//	        User user = userRepo.findById(userId).orElse(null);
-////	        if (user != null) {
-////	            if (user.getAnswer().equals(answer)) {
-////	                // Hash the new password before saving it (use a proper password hashing library)
-////	                user.setPassword(newPassword);
-////	                userRepo.save(user);
-////	                return "Password reset successfully.";
-////	            } else {
-////	                return "Invalid security answer.";
-////	            }
-////	        } else {
-////	            return "User not found.";
-////	        }
-//	    }
+
+
+	 
+	 
+	 public UUID forgetpassword(UserDTO userDTO) {
+		 Optional<User> userOptional=Optional.ofNullable(userRepo.findByUsername(userDTO.getUsername()));
+		 if(userOptional.isPresent()) {
+			 User user=userOptional.get();
+			 UUID uuid = UUID.randomUUID();
+			 user.setCode(uuid);
+			 
+			 userRepo.save(user);
+			 return uuid;
+		 }else {
+		        throw new IllegalArgumentException("User not found."); 
+		    }
+	 }
+	 
+	 public  void updatePassword(UserDTO userDTO) {
+		 User user=userRepo.findByUsername(userDTO.getUsername());
+		 if(user!=null) {
+			 UUID previousUUID=user.getCode();
+			 String currentUUID=userDTO.getCode();
+			 
+			 if(previousUUID != null && previousUUID.equals(currentUUID)) {
+				 user.setPassword(passwordEncoder.encode(user.getPassword()));
+				 userRepo.save(user);
+			 }
+		 }
+	 }
+	    }
+
 	
-}
+
 
 	 
 	 
