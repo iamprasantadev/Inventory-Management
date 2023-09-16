@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -22,16 +23,14 @@ public class User {
 	private Integer userid;
 	private String username;
 	private String password;
-	private LocalDateTime lastlogin;
+	//private LocalDateTime lastlogin;
+	private UUID code;
 	
 	
 	
-	
-	
-	
-	 	@OneToOne
-		@JoinColumn(name = "userid", referencedColumnName = "userid")
-		private UserDetails user;
 
+	 @OneToOne
+     @JoinColumn(name="id")
+     private UserDetails userdetail;	
 
 }

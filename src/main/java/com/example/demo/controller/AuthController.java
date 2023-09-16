@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -15,7 +16,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,16 +54,14 @@ public class AuthController {
 	
 	@Autowired
 	UserService userService;
-	
-	
-	
-	
-	  @Autowired UserDetailsService userdetailsService;
+	  @Autowired 
+	  UserDetailsService userdetailsService;
 	  
 	  
 	 
 	 
 	
+
 	@PostMapping("/signup")
 	public ResponseEntity<MessageResponse> saveDeveloper(@RequestBody User user) {
 		
@@ -72,7 +73,7 @@ public class AuthController {
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 
 	}
-		
+
 	@PostMapping("/signin")
 	public ResponseEntity<UserInfoResponse> authenticateUser(@Valid@RequestBody UserDTO userDTO) {
 		
@@ -102,7 +103,7 @@ public class AuthController {
 //		return ResponseEntity.badRequest().body("Refresh token expired!");
 //	}
 	
-	
+	//for logout
 	@PostMapping("/signout")
 	public ResponseEntity<?> logoutUser() {
 		ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
@@ -110,11 +111,21 @@ public class AuthController {
 
 	}
 	
+	@PostMapping("/forget")
+	public ResponseEntity<UUID> forgetPassword(UserDTO userDTO) {
+	UUID generatedUuid=userService.forgetpassword(userDTO);
+	return new ResponseEntity<UUID>(generatedUuid,HttpStatus.OK);
 	 
 
 	       
 
 	}
+	@PutMapping("/updatepassword")
+	public String updatePassword(@RequestBody UserDTO userDTO) {
+		userService.updatePassword(userDTO);
+		return "Password ResetSuccessfully";
+	}
+}
 
 
 

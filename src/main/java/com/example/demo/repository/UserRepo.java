@@ -9,7 +9,7 @@ import com.example.demo.entity.User;
 import java.util.List;
 
 @Repository
-public interface UserRepo extends CrudRepository<User,Long>,JpaRepository<User,Long> {
+public interface UserRepo extends CrudRepository<User,Integer>,JpaRepository<User,Integer> {
 
 	User findByUsername(String username);
 	
