@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.UserDetailDTO;
@@ -20,6 +21,8 @@ public class UserDetailsService {
 	UserDetailsRepo userDetailsRepo;
 	@Autowired
 	ModelMapper modelMapper;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 ////	public String forgotPassword(String email) {
 ////		 
 ////		 Optional<UserDetails> userOptional=Optional.ofNullable(userDetailsRepo.findByEmail(email));
@@ -43,6 +46,7 @@ public class UserDetailsService {
     		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
     		  LocalDateTime now = LocalDateTime.now();  
     		 user.setCreated_at(dtf.format(now)); 
+    		 user.setPassword(passwordEncoder.encode(userdto.getPassword()));
     		 userDetailsRepo.save(user);
     	       }
     	public  List<UserDetailDTO> getAllUserdetail(){

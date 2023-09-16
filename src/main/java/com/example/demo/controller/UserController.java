@@ -27,11 +27,11 @@ public class UserController {
 @Autowired
 UserDetailsService userdetailsService;
 	
-@PostMapping("/createuser")	
-public ResponseEntity<String>createuser(@RequestBody UserDetailDTO userdto){
-	userdetailsService.createuser(userdto);
-	return new ResponseEntity<String>(HttpStatus.CREATED);
-     }	
+//@PostMapping("/createuser")	
+//public ResponseEntity<String>createuser(@RequestBody UserDetailDTO userdto){
+//	userdetailsService.createuser(userdto);
+//	return new ResponseEntity<String>(HttpStatus.CREATED);
+//     }	
 @GetMapping("/getalluser")
 public  List<UserDetailDTO> getAllUserdetails() {
 	return userdetailsService.getAllUserdetail();

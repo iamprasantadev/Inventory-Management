@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.UserDetailDTO;
 import com.example.demo.entity.MessageResponse;
 import com.example.demo.entity.RefreshToken;
 import com.example.demo.entity.TokenRefreshResponse;
@@ -47,6 +48,8 @@ public class AuthController {
 	
 	@Autowired
 	UserService userService;
+	@Autowired
+	UserDetailsService userDetailsService;
 		
 	@PostMapping("/signup")
 	public ResponseEntity<MessageResponse> saveDeveloper(@RequestBody User user) {
@@ -59,6 +62,11 @@ public class AuthController {
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 
 	}
+	@PostMapping("/createuser")	
+	public ResponseEntity<String>createuser(@RequestBody UserDetailDTO userdto){
+		userDetailsService.createuser(userdto);
+		return new ResponseEntity<String>(HttpStatus.CREATED);
+	     }	
 		
 	@PostMapping("/signin")
 	public ResponseEntity<UserInfoResponse> authenticateUser(@Valid@RequestBody UserDTO userDTO) {
