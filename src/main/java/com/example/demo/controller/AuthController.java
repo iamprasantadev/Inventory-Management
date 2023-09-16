@@ -51,14 +51,19 @@ public class AuthController {
 	
 	@Autowired
 	UserService userService;
-	@Autowired
-	UserDetailsService userdetailsService;
 	
-	@PostMapping("/createuser")	
-	public ResponseEntity<String>createuser(@RequestBody UserDetaildto userdto){
-		userdetailsService.createuser(userdto);
-		return new ResponseEntity<String>(HttpStatus.CREATED);
-	     }
+	
+	
+	
+	  @Autowired UserDetailsService userdetailsService;
+	  
+	  @PostMapping("/createuser") public
+	  ResponseEntity<String>createuser(@RequestBody UserDetaildto userdto){
+	  userdetailsService.createuser(userdto); return new
+	  ResponseEntity<String>(HttpStatus.CREATED); }
+	 
+	 
+	 
 	
 	@PostMapping("/signup")
 	public ResponseEntity<MessageResponse> saveDeveloper(@RequestBody User user) {

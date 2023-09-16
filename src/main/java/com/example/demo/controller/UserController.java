@@ -29,26 +29,25 @@ UserDetailsService userdetailsService;
 public ResponseEntity<String>createuser(@RequestBody UserDetaildto userdto){
 	userdetailsService.createuser(userdto);
 	return new ResponseEntity<String>(HttpStatus.CREATED);
-     }
-	
+     }	
 @GetMapping("/getalluser")
 public  List<UserDetaildto> getAllUserdetails() {
 	return userdetailsService.getAllUserdetail();
-    }
+     }
 @GetMapping("/user/{id}")
 public ResponseEntity<UserDetaildto> getFacaltyById(@PathVariable Integer id) {
-	UserDetaildto userdto= userdetailsService.getUserdetailsById(id);
-	 return new ResponseEntity(userdto,HttpStatus.OK);
-    }
+	 UserDetaildto userdto= userdetailsService.getUserdetailsById(id);
+	 return new ResponseEntity<UserDetaildto>(userdto,HttpStatus.OK);
+     }
 @PutMapping("/updateuser")
 public ResponseEntity<UserDetaildto> updateUser( @RequestBody UserDetails user){
 	 userdetailsService.updateuser(user);
-    return new ResponseEntity(HttpStatus.OK);
+     return new ResponseEntity<UserDetaildto>(HttpStatus.OK);
      }
 @DeleteMapping("/deleteuser/{id}")
 public String deleteCourse(@PathVariable("id") int id) {
 	userdetailsService.deleteUserById(id);
-  return "Successfully Deleted";
-      }
+    return "Successfully Deleted";
+     }
 
  }

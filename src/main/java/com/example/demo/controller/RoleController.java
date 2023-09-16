@@ -18,7 +18,6 @@ import com.example.demo.dto.Rolesdto;
 import com.example.demo.entity.Roles;
 import com.example.demo.service.RolesService;
 
-
 @RestController
 @RequestMapping("/api/role")
 @CrossOrigin(origins = "*")
@@ -31,30 +30,26 @@ RolesService roleService;
 public ResponseEntity<String>createuser(@RequestBody Rolesdto roledto){
 	roleService.createrole(roledto);
 	return new ResponseEntity<String>(HttpStatus.CREATED);
-     }
-	
+    }	
 @GetMapping("/getallrole")
 public  List<Rolesdto> getAllRoles() {
 	return roleService.getAllRoles();
     }
 @GetMapping("/role/{id}")
-public ResponseEntity<Rolesdto> getRoleById(@PathVariable Integer roleid) {
+public ResponseEntity<Rolesdto> getRoleById(@PathVariable Integer roleid){
 	Rolesdto roledto= roleService.getRolesById(roleid);
-	 return new ResponseEntity(roledto,HttpStatus.OK);
+	 return new ResponseEntity<Rolesdto>(roledto,HttpStatus.OK);
     }
 @PutMapping("/updaterole")
 public ResponseEntity<Rolesdto> updateRole( @RequestBody  Roles role){
 	 roleService.updaterole(role);
-    return new ResponseEntity(HttpStatus.OK);
-     }
+    return new ResponseEntity<Rolesdto>(HttpStatus.OK);
+    }
 @DeleteMapping("/deleterole/{roleid}")
-public String deleteRole(@PathVariable("roleid") int roleid) {
+public String deleteRole(@PathVariable("roleid") int roleid){
 	roleService.deleteRolesById(roleid);
   return "Successfully Deleted";
-      }
+    }
 
-
-
-	
 	
 }

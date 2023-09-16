@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +27,8 @@ public class User {
 	 @OneToOne
 		@JoinColumn(name = "userid", referencedColumnName = "userid")
 		private UserDetails user;
-	
+	 	  
+	 @OneToOne(mappedBy = "user")
+     private UserDetails userdetails; 
 
 }
