@@ -1,6 +1,9 @@
 package com.example.demo.security.config;
 
 import java.util.Date;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +22,6 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 @ConfigurationProperties(prefix = "login")
@@ -105,6 +107,16 @@ public class JwtUtils {
 				.signWith(key(), SignatureAlgorithm.HS256).compact();
 	}
 	
+//	public String createToken(Map<String, Object> claims, String subject) {
+//		return Jwts.builder()
+//				.setClaims(claims)
+//				.setSubject(subject)
+//				.setIssuedAt(new Date((new Date()).getTime()))
+//				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+//				.signWith(SignatureAlgorithm.HS256, jwtSecret)
+//				.compact();
+//	}
+//	
 
 
 }

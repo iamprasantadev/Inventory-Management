@@ -1,24 +1,40 @@
 package com.example.demo.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-import org.springframework.data.annotation.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import lombok.Data;
 
 @Entity
 @Data
+@Table(name="userdetails")
 public class UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
 	private Integer id;
-	private Integer firstname;
-	private Integer lastname;
-	private String mail;
+	private String firstname;
+	private String lastname;
+	private String email;
 	private Long mobile;
+	private String password;
 	private String created_at;
+
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "userid", nullable=false)
+     private User user;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "roleid", nullable=false)
+     private User role;
+	
 
 }

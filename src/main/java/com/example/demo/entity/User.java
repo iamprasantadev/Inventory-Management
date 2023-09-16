@@ -1,10 +1,17 @@
 package com.example.demo.entity;
 
-import org.springframework.data.annotation.Id;
+import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+
+
 import lombok.Data;
 
 @Entity
@@ -12,10 +19,19 @@ import lombok.Data;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long userid;
+	private Integer userid;
 	private String username;
 	private String password;
-	private String lastlogin;
+	private LocalDateTime lastlogin;
 	
+	
+	
+	
+	
+	
+	 	@OneToOne
+		@JoinColumn(name = "userid", referencedColumnName = "userid")
+		private UserDetails user;
+
 
 }
