@@ -8,7 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.demo.dto.Rolesdto;
+import com.example.demo.dto.RolesDTO;
 import com.example.demo.entity.Roles;
 import com.example.demo.repository.RoleRepo;
 
@@ -21,7 +21,7 @@ RoleRepo roleRepo;
 @Autowired	
 ModelMapper modelMapper;
 	
-public void createrole(Rolesdto roledto){
+public void createrole(RolesDTO roledto){
 	Roles role= modelMapper.map(roledto,Roles.class);
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 		  LocalDateTime now = LocalDateTime.now();  
@@ -29,15 +29,15 @@ public void createrole(Rolesdto roledto){
 		  role.setUpdate_at(dtf.format(now));
 		 roleRepo.save(role);
 	       }
-   public  List<Rolesdto> getAllRoles(){
+   public  List<RolesDTO> getAllRoles(){
 	Iterable<Roles>roleist = roleRepo.findAll();	
-	List<Rolesdto> roledtoList= modelMapper.map(roleist,new TypeToken<List<Rolesdto>>() {}.getType() );
+	List<RolesDTO> roledtoList= modelMapper.map(roleist,new TypeToken<List<RolesDTO>>() {}.getType() );
      return roledtoList;
      } 
-	public Rolesdto getRolesById(Integer id) {
+	public RolesDTO getRolesById(Integer id) {
 		 Optional<Roles> user=roleRepo.findById(id);
 		     if(user.isPresent()) {
-		    	 Rolesdto userdto= modelMapper.map(user,Rolesdto.class);	 
+		    	 RolesDTO userdto= modelMapper.map(user,RolesDTO.class);	 
 			  return userdto;
 		     }
 		 return null;

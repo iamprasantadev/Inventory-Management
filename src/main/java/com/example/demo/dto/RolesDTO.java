@@ -3,7 +3,7 @@ package com.example.demo.dto;
 import lombok.Data;
 
 @Data
-public class Rolesdto {
+public class RolesDTO {
 	private Integer roleid;
 	private String title;
 	private String description;

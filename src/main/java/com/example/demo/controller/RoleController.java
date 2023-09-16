@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.demo.dto.Rolesdto;
+import com.example.demo.dto.RolesDTO;
 import com.example.demo.entity.Roles;
 import com.example.demo.service.RolesService;
 
@@ -27,23 +27,23 @@ public class RoleController {
 RolesService roleService;	
 	
 @PostMapping("/addrole")	
-public ResponseEntity<String>createuser(@RequestBody Rolesdto roledto){
+public ResponseEntity<String>createuser(@RequestBody RolesDTO roledto){
 	roleService.createrole(roledto);
 	return new ResponseEntity<String>(HttpStatus.CREATED);
     }	
 @GetMapping("/getallrole")
-public  List<Rolesdto> getAllRoles() {
+public  List<RolesDTO> getAllRoles() {
 	return roleService.getAllRoles();
     }
 @GetMapping("/role/{id}")
-public ResponseEntity<Rolesdto> getRoleById(@PathVariable Integer roleid){
-	Rolesdto roledto= roleService.getRolesById(roleid);
-	 return new ResponseEntity<Rolesdto>(roledto,HttpStatus.OK);
+public ResponseEntity<RolesDTO> getRoleById(@PathVariable Integer roleid){
+	RolesDTO roledto= roleService.getRolesById(roleid);
+	 return new ResponseEntity<RolesDTO>(roledto,HttpStatus.OK);
     }
 @PutMapping("/updaterole")
-public ResponseEntity<Rolesdto> updateRole( @RequestBody  Roles role){
+public ResponseEntity<RolesDTO> updateRole( @RequestBody  Roles role){
 	 roleService.updaterole(role);
-    return new ResponseEntity<Rolesdto>(HttpStatus.OK);
+    return new ResponseEntity<RolesDTO>(HttpStatus.OK);
     }
 @DeleteMapping("/deleterole/{roleid}")
 public String deleteRole(@PathVariable("roleid") int roleid){
