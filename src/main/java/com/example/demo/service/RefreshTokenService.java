@@ -10,11 +10,15 @@ import com.example.demo.entity.RefreshToken;
 import com.example.demo.entity.TokenRefreshException;
 import com.example.demo.repository.RefreshTokenRepo;
 
+import lombok.Value;
+
 @Service
 public class RefreshTokenService {
 	
 	@Autowired
 	RefreshTokenRepo refreshTokenRepo;
+//	@Value("${login.jwtRefreshExpirationMs}")
+//	  private Long refreshTokenDurationMs;
 	
 	public RefreshToken findByToken(String Token) {
 		return refreshTokenRepo.findByToken(Token);

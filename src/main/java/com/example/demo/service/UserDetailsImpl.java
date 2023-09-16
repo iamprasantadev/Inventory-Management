@@ -14,13 +14,13 @@ public class UserDetailsImpl implements UserDetails{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Long userid;
+	private Integer userid;
 	private String username;
 	
 	private Collection<? extends GrantedAuthority> authorities;
 	@JsonIgnore
 	private String password;
-	 public UserDetailsImpl( Long userid,String username, String password) {
+	 public UserDetailsImpl( Integer userid,String username, String password) {
 		 	this.userid=userid;
 		    this.username = username;
 		    this.password = password;

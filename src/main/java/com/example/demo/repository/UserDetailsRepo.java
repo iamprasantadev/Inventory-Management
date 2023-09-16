@@ -4,11 +4,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.entity.User;
+import com.example.demo.entity.UserDetails;
+
 @Repository
-public interface UserRepo extends CrudRepository<User,Long>,JpaRepository<User,Long> {
-	User findByUsername(String username);
+public interface UserDetailsRepo extends CrudRepository<UserDetails,Integer>,JpaRepository<UserDetails,Integer> {
 	
-	Boolean existsByUsername(String username);
+	UserDetails findByEmail(String email);
+	
+	
 
 }
