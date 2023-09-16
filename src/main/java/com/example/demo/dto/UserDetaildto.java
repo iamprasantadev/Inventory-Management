@@ -10,12 +10,10 @@ public class UserDetailDTO {
 	private String lastname;
 	private String email;
 	private Long mobile;
+	private String password;
 	private String created_at;
 	private Integer userid;
 	private Integer roleid;
 	
-//	private Integer questionid;
-//	private Integer answerid;
+   }
 
-
-}

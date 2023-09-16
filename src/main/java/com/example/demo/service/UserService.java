@@ -30,21 +30,21 @@ public class UserService {
 	        return userRepo.save(user);
 	    }
 	 
-	 public String resetPassword(Long userId, String answer, String newPassword) {
-	        User user = userRepo.findById(userId).orElse(null);
-	        if (user != null) {
-	            if (user.getAnswer().equals(answer)) {
-	                // Hash the new password before saving it (use a proper password hashing library)
-	                user.setPassword(newPassword);
-	                userRepo.save(user);
-	                return "Password reset successfully.";
-	            } else {
-	                return "Invalid security answer.";
-	            }
-	        } else {
-	            return "User not found.";
-	        }
-	    }
+//	 public String resetPassword(Long userId, String answer, String newPassword) {
+//	        User user = userRepo.findById(userId).orElse(null);
+////	        if (user != null) {
+////	            if (user.getAnswer().equals(answer)) {
+////	                // Hash the new password before saving it (use a proper password hashing library)
+////	                user.setPassword(newPassword);
+////	                userRepo.save(user);
+////	                return "Password reset successfully.";
+////	            } else {
+////	                return "Invalid security answer.";
+////	            }
+////	        } else {
+////	            return "User not found.";
+////	        }
+//	    }
 	
 }
 
