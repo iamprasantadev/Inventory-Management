@@ -1,14 +1,11 @@
 package com.example.demo.entity;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 
@@ -28,9 +25,7 @@ public class User {
 	
 	
 	
-
-	 @OneToOne
-     @JoinColumn(name="id")
-     private UserDetails userdetail;	
-
+	/*
+	 * @OneToOne(mappedBy = "user") private UserDetail userdetails;
+	 */
 }

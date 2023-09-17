@@ -22,8 +22,8 @@ public class Roles {
 	private String created_at;
 	private String update_at;
 	
-	@OneToOne(mappedBy = "role")
-    private UserDetails userdetails; 
-
+	/*
+	 * @OneToOne(mappedBy = "role") private UserDetail userdetails;
+	 */
 
 }

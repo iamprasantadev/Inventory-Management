@@ -62,6 +62,8 @@ public class AuthController {
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 
 	}
+	// to register 
+	
 	@PostMapping("/createuser")	
 	public ResponseEntity<String>createuser(@RequestBody UserDetailDTO userdto){
 		userDetailsService.createuser(userdto);

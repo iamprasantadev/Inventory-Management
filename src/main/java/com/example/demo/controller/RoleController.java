@@ -25,26 +25,30 @@ public class RoleController {
 
 @Autowired	
 RolesService roleService;	
-	
+ // to add role
 @PostMapping("/addrole")	
 public ResponseEntity<String>createuser(@RequestBody RolesDTO roledto){
 	roleService.createrole(roledto);
 	return new ResponseEntity<String>(HttpStatus.CREATED);
-    }	
+    }
+// to get all role
 @GetMapping("/getallrole")
 public  List<RolesDTO> getAllRoles() {
 	return roleService.getAllRoles();
     }
+//to view role by id
 @GetMapping("/role/{id}")
 public ResponseEntity<RolesDTO> getRoleById(@PathVariable Integer roleid){
 	RolesDTO roledto= roleService.getRolesById(roleid);
 	 return new ResponseEntity<RolesDTO>(roledto,HttpStatus.OK);
     }
+//to update role
 @PutMapping("/updaterole")
 public ResponseEntity<RolesDTO> updateRole( @RequestBody  Roles role){
 	 roleService.updaterole(role);
     return new ResponseEntity<RolesDTO>(HttpStatus.OK);
     }
+// to delete role
 @DeleteMapping("/deleterole/{roleid}")
 public String deleteRole(@PathVariable("roleid") int roleid){
 	roleService.deleteRolesById(roleid);

@@ -15,7 +15,7 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name="userdetails")
-public class UserDetails {
+public class UserDetail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
@@ -28,13 +28,15 @@ public class UserDetails {
 	private String created_at;
 
 	
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "userid", nullable=false)
-     private User user;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "roleid", nullable=false)
-     private User role;
-	
+	/*
+	 * @OneToOne(cascade = CascadeType.ALL)
+	 * 
+	 * @JoinColumn(name = "userid", nullable=false) private User user;
+	 * 
+	 * 
+	 * @OneToOne(cascade = CascadeType.ALL)
+	 * 
+	 * @JoinColumn(name = "roleid", nullable=false) private User role;
+	 */
 
 }
