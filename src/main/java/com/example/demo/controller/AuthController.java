@@ -73,6 +73,11 @@ public class AuthController {
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 
 	}
+	@PostMapping("/lastlogin")
+	public ResponseEntity<?> saveLastLogin(@RequestBody UserDTO userDTO) {
+		userService.lastLogin(userDTO);
+		return new ResponseEntity(HttpStatus.OK);
+	}
 
 	@PostMapping("/signin")
 	public ResponseEntity<UserInfoResponse> authenticateUser(@Valid@RequestBody UserDTO userDTO) {

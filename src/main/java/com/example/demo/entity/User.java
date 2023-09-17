@@ -3,7 +3,6 @@ package com.example.demo.entity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,7 +22,7 @@ public class User {
 	private Integer userid;
 	private String username;
 	private String password;
-	//private LocalDateTime lastlogin;
+	private String lastlogin;
 	private UUID code;
 	
 	
@@ -31,6 +30,14 @@ public class User {
 
 	 @OneToOne
      @JoinColumn(name="id")
-     private UserDetails userdetail;	
+     private UserDetails userdetail;
+
+
+
+
+	public void setLastlogin(String format) {
+		
+		
+	}	
 
 }

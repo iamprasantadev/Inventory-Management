@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,11 +28,21 @@ public class UserService {
 	}
 	
 	 public User saveUser(User user) {
+
 	       user.setUsername(user.getUsername());
 	        user.setPassword(passwordEncoder.encode(user.getPassword()));
-	        //user.setLastlogin(user.getLastlogin());
 	        return userRepo.save(user);
 	    }
+	 
+	 public void lastLogin(UserDTO userDTO) {
+		 User user=userRepo.findByUserid(userDTO.getUserid());
+		 if(user!=null) {
+		 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+	  LocalDateTime now = LocalDateTime.now();
+	  user.setLastlogin(dtf.format(now));
+	  userRepo.save(user);
+		 }
+	 }
 	 
 
 
