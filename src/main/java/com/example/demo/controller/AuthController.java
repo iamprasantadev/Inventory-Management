@@ -16,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,8 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.UserDTO;
 
 import com.example.demo.entity.MessageResponse;
-import com.example.demo.entity.RefreshToken;
-import com.example.demo.entity.TokenRefreshResponse;
 import com.example.demo.entity.User;
 import com.example.demo.entity.UserInfoResponse;
 import com.example.demo.security.config.JwtUtils;
@@ -73,6 +70,11 @@ public class AuthController {
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 
 	}
+	@PostMapping("/lastlogin")
+	public ResponseEntity<?> saveLastLogin(@RequestBody UserDTO userDTO) {
+		userService.lastLogin(userDTO);
+		return new ResponseEntity(HttpStatus.OK);
+	}
 
 	@PostMapping("/signin")
 	public ResponseEntity<UserInfoResponse> authenticateUser(@Valid@RequestBody UserDTO userDTO) {
@@ -111,9 +113,9 @@ public class AuthController {
 
 	}
 	
-	@PostMapping("/forget")
-	public ResponseEntity<UUID> forgetPassword(UserDTO userDTO) {
-	UUID generatedUuid=userService.forgetpassword(userDTO);
+	@PostMapping("/forgotpassword")
+	public ResponseEntity<UUID> forgotPassword(@RequestBody UserDTO userDTO) {
+	UUID generatedUuid=userService.forgotpassword(userDTO);
 	return new ResponseEntity<UUID>(generatedUuid,HttpStatus.OK);
 	 
 

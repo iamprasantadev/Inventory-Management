@@ -78,7 +78,7 @@ public class UserDetailsImpl implements UserDetails{
 
 	public Integer getUserid() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.userid;
 	}
 
 	

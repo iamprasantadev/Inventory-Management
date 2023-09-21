@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,17 +28,27 @@ public class UserService {
 	}
 	
 	 public User saveUser(User user) {
+
 	       user.setUsername(user.getUsername());
 	        user.setPassword(passwordEncoder.encode(user.getPassword()));
-	        //user.setLastlogin(user.getLastlogin());
 	        return userRepo.save(user);
 	    }
 	 
+	 public void lastLogin(UserDTO userDTO) {
+		 User user=userRepo.findByUserid(userDTO.getUserid());
+		 if(user!=null) {
+		 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+	  LocalDateTime now = LocalDateTime.now();
+	  user.setLastlogin(dtf.format(now));
+	  userRepo.save(user);
+		 }
+	 }
+	 
 
 
 	 
 	 
-	 public UUID forgetpassword(UserDTO userDTO) {
+	 public UUID forgotpassword(UserDTO userDTO) {
 		 Optional<User> userOptional=Optional.ofNullable(userRepo.findByUsername(userDTO.getUsername()));
 		 if(userOptional.isPresent()) {
 			 User user=userOptional.get();
@@ -56,12 +68,14 @@ public class UserService {
 			 UUID previousUUID=user.getCode();
 			 String currentUUID=userDTO.getCode();
 			 
-			 if(previousUUID != null && previousUUID.equals(currentUUID)) {
-				 user.setPassword(passwordEncoder.encode(user.getPassword()));
+			 if(previousUUID != null && previousUUID.toString().equals(currentUUID.toString())) {
+				 user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 				 userRepo.save(user);
 			 }
 		 }
 	 }
+
+	
 	    }
 
 	
