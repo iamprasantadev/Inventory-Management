@@ -11,27 +11,40 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.UserDetailDTO;
-
+import com.example.demo.entity.User;
 import com.example.demo.entity.UserDetail;
 import com.example.demo.repository.UserDetailsRepo;
+import com.example.demo.repository.UserRepo;
 
 @Service
 public class UserDetailsService {
 	@Autowired
 	UserDetailsRepo userDetailsRepo;
 	@Autowired
+	UserRepo userRepo;
+	@Autowired
 	ModelMapper modelMapper;
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
       public void createuser(UserDetailDTO userdto){
-    	  UserDetail user= modelMapper.map(userdto,UserDetail.class);
-    		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    	  Optional<User> userOptional = userRepo.findById(userdto.getUserid());
+    	  if(userOptional.isPresent()) {
+    		  User userList = userOptional.get();
+    		  UserDetail userDetailList = new UserDetail();
+    		  userDetailList.setFirstname(userdto.getFirstname());
+    		  userDetailList.setLastname(userdto.getLastname());
+    		  userDetailList.setEmail(userdto.getEmail());
+    		  userDetailList.setMobile(userdto.getMobile());
+    		  userDetailList.setPassword(passwordEncoder.encode(userdto.getPassword()));
+    		  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
     		  LocalDateTime now = LocalDateTime.now();  
-    		 user.setCreated_at(dtf.format(now)); 
-    		 user.setPassword(passwordEncoder.encode(userdto.getPassword()));
-    		 userDetailsRepo.save(user);
-    	       }
+    		  userDetailList.setCreated_at(dtf.format(now));
+    		  userDetailList.setUser(userList);
+    		  userDetailsRepo.save(userDetailList);
+    	  }
+    	    		
+    }
     	public  List<UserDetailDTO> getAllUserdetail(){
     		List<UserDetail> UserdetailList=userDetailsRepo.findAll();	
     		List<UserDetailDTO> userdetailDTOList= modelMapper.map(UserdetailList,new TypeToken<List<UserDetailDTO>>() {}.getType() );
@@ -67,5 +80,9 @@ public class UserDetailsService {
     	    }else
     	  	  return 1;
     	    }   
-    	}
+    	
+    
+
+}
+
 

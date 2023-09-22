@@ -1,23 +1,34 @@
-//package com.example.demo.entity;
-//
-//import javax.persistence.Entity;
-//import javax.persistence.GeneratedValue;
-//import javax.persistence.GenerationType;
-//
-//import org.springframework.data.annotation.Id;
-//
-//import lombok.Data;
-//
-//@Entity
-//@Data
-//public class Permissions {
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	private Integer id;
-//	private String title;
-//	private String description;
-//	private Integer active;
-//	private String created_at;
-//	private String update_at;
-//
-//}
+package com.example.demo.entity;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+import lombok.Data;
+
+@Entity
+@Data
+@Table(name="permissions")
+public class Permissions {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	
+	private Integer permissionsid;
+	private String title;
+	private String description;
+	private Integer active;
+	private String created_at;
+	private String updated_at;
+
+
+	  @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy =
+	  "permissions") private Set<Roles> roles = new HashSet<>();
+}

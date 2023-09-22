@@ -13,7 +13,7 @@ public class UserDetailDTO {
 	private String password;
 	private String created_at;
 	private Integer userid;
-	private Integer roleid;
+
 	
    }
 

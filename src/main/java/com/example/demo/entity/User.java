@@ -1,13 +1,11 @@
 package com.example.demo.entity;
 
 import java.util.UUID;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-
 
 
 import lombok.Data;
@@ -23,9 +21,8 @@ public class User {
 	//private LocalDateTime lastlogin;
 	private UUID code;
 	
+	@OneToOne(mappedBy="user") 
+	 private UserDetail userDetail;;	
 	
 	
-	/*
-	 * @OneToOne(mappedBy = "user") private UserDetail userdetails;
-	 */
 }

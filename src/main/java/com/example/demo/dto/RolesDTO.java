@@ -10,4 +10,5 @@ public class RolesDTO {
 	private Integer active;
 	private String created_at;
 	private String update_at;
+	private Integer permissionsid;
  }

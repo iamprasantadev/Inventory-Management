@@ -2,14 +2,19 @@ package com.example.demo.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.dto.RolesDTO;
+import com.example.demo.entity.Permissions;
 import com.example.demo.entity.Roles;
+import com.example.demo.repository.PermissionsRepo;
 import com.example.demo.repository.RoleRepo;
 
 @Service
@@ -20,13 +25,21 @@ RoleRepo roleRepo;
 
 @Autowired	
 ModelMapper modelMapper;
-	
+@Autowired
+PermissionsRepo permissionsRepo;
+
 public void createrole(RolesDTO roledto){
 	Roles role= modelMapper.map(roledto,Roles.class);
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 		  LocalDateTime now = LocalDateTime.now();  
 		  role.setCreated_at(dtf.format(now)); 
 		  role.setUpdate_at(dtf.format(now));
+		Set<Permissions> permissions = new HashSet<>();
+		if(roledto.getPermissionsid()!=null);
+		Permissions permissionsList = permissionsRepo.findById(roledto.getPermissionsid())
+		.orElseThrow(() -> new RuntimeException("Course not found with ID: " ));
+		permissions.add(permissionsList);
+		role.setPermissions(permissions);
 		 roleRepo.save(role);
 	       }
    public  List<RolesDTO> getAllRoles(){
