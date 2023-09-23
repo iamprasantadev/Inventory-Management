@@ -36,4 +36,7 @@ public class Roles {
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name="roles_permissons", joinColumns = @JoinColumn(name = "roleid"), inverseJoinColumns = @JoinColumn(name = "permissionsid"))
 	private Set<Permissions> permissions = new HashSet<>();
+	
+	@OneToOne(mappedBy="roles") 
+	 private UserDetail userDetail;;	
 }

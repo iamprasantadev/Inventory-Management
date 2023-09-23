@@ -12,8 +12,9 @@ public class UserDetailDTO {
 	private Long mobile;
 	private String password;
 	private String created_at;
+	private String status;
 	private Integer userid;
-
+	private Integer roleid;
 	
    }
 

@@ -11,8 +11,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.UserDetailDTO;
+import com.example.demo.entity.Roles;
 import com.example.demo.entity.User;
 import com.example.demo.entity.UserDetail;
+import com.example.demo.repository.RoleRepo;
 import com.example.demo.repository.UserDetailsRepo;
 import com.example.demo.repository.UserRepo;
 
@@ -26,21 +28,26 @@ public class UserDetailsService {
 	ModelMapper modelMapper;
 	@Autowired
 	PasswordEncoder passwordEncoder;
-
+    @Autowired
+    RoleRepo rolesRepo;
       public void createuser(UserDetailDTO userdto){
     	  Optional<User> userOptional = userRepo.findById(userdto.getUserid());
-    	  if(userOptional.isPresent()) {
+    	  Optional<Roles> rolesOptional= rolesRepo.findById(userdto.getRoleid());
+    	  if(userOptional.isPresent()&& rolesOptional.isPresent() ) {
     		  User userList = userOptional.get();
+    		  Roles rolesList = rolesOptional.get();
     		  UserDetail userDetailList = new UserDetail();
     		  userDetailList.setFirstname(userdto.getFirstname());
     		  userDetailList.setLastname(userdto.getLastname());
     		  userDetailList.setEmail(userdto.getEmail());
     		  userDetailList.setMobile(userdto.getMobile());
+    		  userDetailList.setStatus(userdto.getStatus());
     		  userDetailList.setPassword(passwordEncoder.encode(userdto.getPassword()));
     		  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
     		  LocalDateTime now = LocalDateTime.now();  
     		  userDetailList.setCreated_at(dtf.format(now));
     		  userDetailList.setUser(userList);
+    		  userDetailList.setRoles(rolesList);
     		  userDetailsRepo.save(userDetailList);
     	  }
     	    		

@@ -39,7 +39,7 @@ public String deletepermissions(@PathVariable("permissionsid")int permissionsid)
 	 return "Successfully Deleted";
      }
 @GetMapping("/permissions/{permissionsid}")
-public ResponseEntity<PermissionsDTO> getPermissionsById(@PathVariable Integer permissionsid) {
+public ResponseEntity<PermissionsDTO> getPermissionsById(@PathVariable ("permissionsid") Integer permissionsid) {
 	PermissionsDTO permissionsdto= permissionsService.getPermissionsById(permissionsid);
 	 return new ResponseEntity<PermissionsDTO>(permissionsdto,HttpStatus.OK);
      }

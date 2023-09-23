@@ -22,11 +22,16 @@ public class UserDetail {
 	private String lastname;
 	private String email;
 	private Long mobile;
+	private String status;
 	private String password;
 	private String created_at;
 
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userid")
     private User user;	
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "roloeid")
+    private Roles roles;
 	
 }

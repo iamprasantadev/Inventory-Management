@@ -25,6 +25,14 @@ public class UserController {
 @Autowired
 UserDetailsService userdetailsService;
 
+//@PostMapping("/createuser")	
+//public ResponseEntity<String>createuser(@RequestBody UserDetailDTO userdto){
+//	userdetailsService.createuser(userdto);
+//	return new ResponseEntity<String>(HttpStatus.CREATED);
+//     }	
+
+
+
  // to view get all user
 
 @GetMapping("/getalluser")
@@ -34,7 +42,7 @@ public  List<UserDetailDTO> getAllUserdetails() {
 // to view user by id
 
 @GetMapping("/user/{id}")
-public ResponseEntity<UserDetailDTO> getFacaltyById(@PathVariable Integer id) {
+public ResponseEntity<UserDetailDTO> getUserById(@PathVariable Integer id) {
 	UserDetailDTO userdto= userdetailsService.getUserdetailsById(id);
 	 return new ResponseEntity<UserDetailDTO>(userdto,HttpStatus.OK);
      }
