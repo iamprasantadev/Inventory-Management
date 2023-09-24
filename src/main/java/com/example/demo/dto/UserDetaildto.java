@@ -9,7 +9,6 @@ public class UserDetailDTO {
 	private String firstname;
 	private String lastname;
 	private String email;
-	private String status;
 	private Long mobile;
 	private String password;
 	private String created_at;
