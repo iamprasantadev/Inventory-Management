@@ -5,7 +5,10 @@ import lombok.Data;
 public class UserDTO {
 	private Integer userid;
 	private String username;
-	private String password;	
+	private String password;
+	private String lastlogin;
+	
+
 	private String code;
     
 }

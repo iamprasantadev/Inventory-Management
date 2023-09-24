@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,8 +27,6 @@ import com.example.demo.dto.RolesDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserDetailDTO;
 import com.example.demo.entity.MessageResponse;
-import com.example.demo.entity.RefreshToken;
-import com.example.demo.entity.TokenRefreshResponse;
 import com.example.demo.entity.User;
 import com.example.demo.entity.UserInfoResponse;
 import com.example.demo.security.config.JwtUtils;
@@ -68,11 +69,19 @@ public class AuthController {
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 
 	}
+
 	@PostMapping("/createuser")	
 	public ResponseEntity<String>createuser(@RequestBody UserDetailDTO userdto){
 		userDetailsService.createuser(userdto);
 		return new ResponseEntity<String>(HttpStatus.CREATED);
 	     }	
+
+	@PostMapping("/lastlogin")
+	public ResponseEntity<?> saveLastLogin(@RequestBody UserDTO userDTO) {
+		userService.lastLogin(userDTO);
+		return new ResponseEntity(HttpStatus.OK);
+	}
+
 
 	// to register 
 	
@@ -121,16 +130,20 @@ public class AuthController {
 		
 	       }
 	
-	@PostMapping("/addrole")	
-	public ResponseEntity<String>createuser(@RequestBody RolesDTO roledto){
-		rolesService.createrole(roledto);
-		return new ResponseEntity<String>(HttpStatus.CREATED);
-	    }
 	@GetMapping("/getallrole")
 	public  List<RolesDTO> getAllRoles() {
 		return rolesService.getAllRoles();
 	    }
 	
+
+	@PostMapping("/forgotpassword")
+	public ResponseEntity<UUID> forgotPassword(@RequestBody UserDTO userDTO) {
+	UUID generatedUuid=userService.forgotpassword(userDTO);
+	return new ResponseEntity<UUID>(generatedUuid,HttpStatus.OK);
+	 
+
+	       
+}
 	}
 
 
