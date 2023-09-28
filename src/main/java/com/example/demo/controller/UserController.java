@@ -37,7 +37,8 @@ UserDetailsService userdetailsService;
 
 @GetMapping("/getalluser")
 public  List<UserDetailDTO> getAllUserdetails() {
-	return userdetailsService.getAllUserdetail();
+	//return userdetailsService.getAllUserdetail();
+	return null;
      }
 // to view user by id
 

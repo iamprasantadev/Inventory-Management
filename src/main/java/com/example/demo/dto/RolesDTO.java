@@ -1,5 +1,7 @@
 package com.example.demo.dto;
 
+import java.util.Set;
+
 import lombok.Data;
 
 @Data
@@ -10,5 +12,5 @@ public class RolesDTO {
 	private Integer active;
 	private String created_at;
 	private String update_at;
-	private Integer permissionsid;
+	private Set<PermissionsDTO> permissions;
  }

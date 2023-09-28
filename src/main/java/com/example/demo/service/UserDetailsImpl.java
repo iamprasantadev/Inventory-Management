@@ -4,7 +4,6 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.example.demo.dto.UserDTO;
 import com.example.demo.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -15,14 +14,14 @@ public class UserDetailsImpl implements UserDetails{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Integer userid;
+	private Integer id;
 	private String username;
 	
 	private Collection<? extends GrantedAuthority> authorities;
 	@JsonIgnore
 	private String password;
 	 public UserDetailsImpl( Integer userid,String username, String password) {
-		 	this.userid=userid;
+		 	this.id=userid;
 		    this.username = username;
 		    this.password = password;
 		    //this.authorities = authorities;
@@ -76,9 +75,9 @@ public class UserDetailsImpl implements UserDetails{
 	}
 
 
-	public Integer getUserid() {
+	public Integer getId() {
 		// TODO Auto-generated method stub
-		return this.userid;
+		return this.getId();
 	}
 
 	

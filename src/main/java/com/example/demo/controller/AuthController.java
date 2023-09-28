@@ -27,14 +27,13 @@ import com.example.demo.dto.RolesDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserDetailDTO;
 import com.example.demo.entity.MessageResponse;
-import com.example.demo.entity.User;
 import com.example.demo.entity.UserInfoResponse;
-import com.example.demo.security.config.JwtUtils;
-import com.example.demo.service.RefreshTokenService;
+import com.example.demo.security.config.*;
 import com.example.demo.service.RolesService;
 import com.example.demo.service.UserDetailsImpl;
 import com.example.demo.service.UserDetailsService;
 import com.example.demo.service.UserService;
+
 
 @RestController
 @RequestMapping("/api/auth")
@@ -49,8 +48,8 @@ public class AuthController {
 	@Autowired
 	JwtUtils jwtUtils;
 	
-	@Autowired
-	RefreshTokenService refreshTokenService;
+//	@Autowired
+//	RefreshTokenService refreshTokenService;
 	
 	@Autowired
 	UserService userService;
@@ -59,13 +58,13 @@ public class AuthController {
 	@Autowired
 	RolesService rolesService;
 	@PostMapping("/signup")
-	public ResponseEntity<MessageResponse> saveDeveloper(@RequestBody User user) {
+	public ResponseEntity<MessageResponse> saveDeveloper(@RequestBody UserDTO userdto) {
 		
-		if (userService.existsByUsername(user.getUsername())){
+		if (userService.existsByUsername(userdto.getUsername())){
 		      return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
 		      }
 
-		userService.saveUser(user);
+		userService.saveUser(userdto);
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 
 	}
@@ -102,7 +101,7 @@ public class AuthController {
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 		String jwt = jwtUtils.generateJwtCookie(userDetails);
 		
-		return ResponseEntity.ok().body( new UserInfoResponse(userDetails.getUserid(),
+		return ResponseEntity.ok().body( new UserInfoResponse(userDetails.getId(),
                 userDetails.getUsername(),jwt));
 	}
 	/*

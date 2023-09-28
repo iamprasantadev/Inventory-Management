@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.UserDetailDTO;
+import com.example.demo.entity.Permissions;
 import com.example.demo.entity.Roles;
 import com.example.demo.entity.User;
 import com.example.demo.entity.UserDetail;
@@ -30,33 +31,29 @@ public class UserDetailsService {
 	PasswordEncoder passwordEncoder;
     @Autowired
     RoleRepo rolesRepo;
+    
       public void createuser(UserDetailDTO userdto){
-    	  Optional<User> userOptional = userRepo.findById(userdto.getUserid());
-    	  Optional<Roles> rolesOptional= rolesRepo.findById(userdto.getRoleid());
-    	  if(userOptional.isPresent()&& rolesOptional.isPresent() ) {
-    		  User userList = userOptional.get();
-    		  Roles rolesList = rolesOptional.get();
-    		  UserDetail userDetailList = new UserDetail();
-    		  userDetailList.setFirstname(userdto.getFirstname());
-    		  userDetailList.setLastname(userdto.getLastname());
-    		  userDetailList.setEmail(userdto.getEmail());
-    		  userDetailList.setMobile(userdto.getMobile());
-    		  userDetailList.setStatus(userdto.getStatus());
-    		  userDetailList.setPassword(passwordEncoder.encode(userdto.getPassword()));
-    		  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-    		  LocalDateTime now = LocalDateTime.now();  
-    		  userDetailList.setCreated_at(dtf.format(now));
-    		  userDetailList.setUser(userList);
-    		  userDetailList.setRoles(rolesList);
-    		  userDetailsRepo.save(userDetailList);
+//   	  UserDetail userdetail = modelMapper.map(userdto, UserDetail.class);
+//      Optional<Roles> roleoptional = rolesRepo.findById(userdto.getRoleid());
+//      if(roleoptional.isPresent()) {   		  
+//   	  userdetail.setRole(roleoptional.get());      		  
+//    	  }
+//   	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+//     LocalDateTime now = LocalDateTime.now();
+//     userdetail.setCreated_at(dtf.format(now));    	 
+//      userdetail.setPassword(passwordEncoder.encode(userdto.getPassword()));    		  
+//    userDetailsRepo.save(userdetail);
     	  }
     	    		
-    }
-    	public  List<UserDetailDTO> getAllUserdetail(){
-    		List<UserDetail> UserdetailList=userDetailsRepo.findAll();	
-    		List<UserDetailDTO> userdetailDTOList= modelMapper.map(UserdetailList,new TypeToken<List<UserDetailDTO>>() {}.getType() );
-    	     return userdetailDTOList;
+    
+    	public  List<UserDetail> getAllUserdetail(){
+//    		List<UserDetail> UserdetailList=userDetailsRepo.findAll();	
+//    		List<UserDetailDTO> userdetailDTOList= modelMapper.map(UserdetailList,new TypeToken<List<UserDetailDTO>>() {}.getType() );
+//    	     return userdetailDTOList;
+    		
+    		return null;
     	     } 
+    	
     	public UserDetailDTO getUserdetailsById(Integer id) {
     		 Optional<UserDetail> user=userDetailsRepo.findById(id);
     		     if(user.isPresent()) {

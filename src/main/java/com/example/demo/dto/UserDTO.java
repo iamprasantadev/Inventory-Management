@@ -7,8 +7,9 @@ public class UserDTO {
 	private String username;
 	private String password;
 	private String lastlogin;
-	
-
 	private String code;
+	private UserDetailDTO userDetails;
+	private String created_at;
+	private String update_at;
     
 }

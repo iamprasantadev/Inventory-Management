@@ -2,24 +2,32 @@ package com.example.demo.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.UserDTO;
+import com.example.demo.entity.Roles;
 import com.example.demo.entity.User;
+import com.example.demo.repository.RoleRepo;
 import com.example.demo.repository.UserRepo;
 @Service
 public class UserService {
 	@Autowired
 	UserRepo userRepo;
-	//@Autowired
-	//RoleRepo roleRepo;
+	@Autowired
+	RoleRepo roleRepo;
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	ModelMapper modelMapper;
 	
 	private static final long EXPIRE_TOKEN_AFTER_MINUTES = 30;
 	
@@ -27,15 +35,24 @@ public class UserService {
 		return userRepo.existsByUsername(username);
 	}
 	
-	 public User saveUser(User user) {
-
-	       user.setUsername(user.getUsername());
-	        user.setPassword(passwordEncoder.encode(user.getPassword()));
-	        return userRepo.save(user);
+	 public User saveUser(UserDTO userdto) {
+			
+			  User user= modelMapper.map(userdto, User.class);
+			  user.getUserDetail().setStatus("Active"); 
+			  Roles role=roleRepo.findByTitle("Admin"); 
+              user.getUserDetail().setRoles(role);
+			  user.setPassword(passwordEncoder.encode(user.getPassword()));
+			  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+     		  LocalDateTime now = LocalDateTime.now();  
+     		  user.setCreated_at(dtf.format(now));
+     		  user.setUpdate_at(dtf.format(now));
+			 
+	        return  userRepo.save(user);
 	    }
 	 
 	 public void lastLogin(UserDTO userDTO) {
-		 User user=userRepo.findByUserid(userDTO.getUserid());
+		 //User user=userRepo.findByUserid(userDTO.getUserid());
+		 User user=null;
 		 if(user!=null) {
 		 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 	  LocalDateTime now = LocalDateTime.now();
