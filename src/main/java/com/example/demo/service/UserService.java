@@ -2,9 +2,7 @@ package com.example.demo.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entity.Roles;
+import com.example.demo.entity.Status;
 import com.example.demo.entity.User;
 import com.example.demo.repository.RoleRepo;
 import com.example.demo.repository.UserRepo;
@@ -38,7 +37,7 @@ public class UserService {
 	 public User saveUser(UserDTO userdto) {
 			
 			  User user= modelMapper.map(userdto, User.class);
-			  user.getUserDetail().setStatus("Active"); 
+			  user.getUserDetail().setStatus(Status.Active); 
 			  Roles role=roleRepo.findByTitle("Admin"); 
               user.getUserDetail().setRoles(role);
 			  user.setPassword(passwordEncoder.encode(user.getPassword()));

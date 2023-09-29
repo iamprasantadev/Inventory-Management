@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 import lombok.Data;
 
 @Entity
@@ -27,8 +26,7 @@ public class User {
 	private String update_at;
 	
 	
-	  @OneToOne(cascade = CascadeType.ALL)
-	  
+	  @OneToOne(cascade = CascadeType.ALL)	  
 	  @JoinColumn(name = "userdetails_id", referencedColumnName = "id") 
 	  private UserDetail userDetail;
 	 

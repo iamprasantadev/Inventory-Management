@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.UserDetailDTO;
-import com.example.demo.entity.UserDetail;
 import com.example.demo.service.UserDetailsService;
 
 @RestController
@@ -25,11 +24,11 @@ public class UserController {
 @Autowired
 UserDetailsService userdetailsService;
 
-//@PostMapping("/createuser")	
-//public ResponseEntity<String>createuser(@RequestBody UserDetailDTO userdto){
-//	userdetailsService.createuser(userdto);
-//	return new ResponseEntity<String>(HttpStatus.CREATED);
-//     }	
+@PostMapping("/createuser")	
+public ResponseEntity<String>createuser(@RequestBody UserDetailDTO userdto){
+	userdetailsService.createuser(userdto);
+	return new ResponseEntity<String>(HttpStatus.CREATED);
+     }	
 
 
 
@@ -37,8 +36,7 @@ UserDetailsService userdetailsService;
 
 @GetMapping("/getalluser")
 public  List<UserDetailDTO> getAllUserdetails() {
-	//return userdetailsService.getAllUserdetail();
-	return null;
+	return userdetailsService.getAllUserdetail();
      }
 // to view user by id
 

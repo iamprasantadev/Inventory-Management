@@ -28,7 +28,8 @@ public class Permissions {
 	private String created_at;
 	private String updated_at;
 
-
-	  @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy =
-	  "permissions") private Set<Roles> roles = new HashSet<>();
+	/*
+	 * @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy =
+	 * "permissions") private Set<Roles> roles = new HashSet<>();
+	 */
 }

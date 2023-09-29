@@ -1,10 +1,6 @@
 package com.example.demo.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,22 +12,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
-
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.demo.dto.RolesDTO;
 import com.example.demo.dto.UserDTO;
-import com.example.demo.dto.UserDetailDTO;
 import com.example.demo.entity.MessageResponse;
 import com.example.demo.entity.UserInfoResponse;
 import com.example.demo.security.config.*;
-import com.example.demo.service.RolesService;
 import com.example.demo.service.UserDetailsImpl;
-import com.example.demo.service.UserDetailsService;
 import com.example.demo.service.UserService;
 
 
@@ -53,10 +42,8 @@ public class AuthController {
 	
 	@Autowired
 	UserService userService;
-	@Autowired
-	UserDetailsService userDetailsService;
-	@Autowired
-	RolesService rolesService;
+	
+	
 	@PostMapping("/signup")
 	public ResponseEntity<MessageResponse> saveDeveloper(@RequestBody UserDTO userdto) {
 		
@@ -69,11 +56,7 @@ public class AuthController {
 
 	}
 
-	@PostMapping("/createuser")	
-	public ResponseEntity<String>createuser(@RequestBody UserDetailDTO userdto){
-		userDetailsService.createuser(userdto);
-		return new ResponseEntity<String>(HttpStatus.CREATED);
-	     }	
+	
 
 	@PostMapping("/lastlogin")
 	public ResponseEntity<?> saveLastLogin(@RequestBody UserDTO userDTO) {
@@ -82,26 +65,17 @@ public class AuthController {
 	}
 
 
-	// to register 
 	
-	/*
-	 * @PostMapping("/createuser") public
-	 * ResponseEntity<String>createuser(@RequestBody UserDetailDTO userdto){
-	 * userDetailsService.createuser(userdto); return new
-	 * ResponseEntity<String>(HttpStatus.CREATED); }
-	 */
 		
 	@PostMapping("/signin")
 	public ResponseEntity<UserInfoResponse> authenticateUser(@Valid@RequestBody UserDTO userDTO) {
 		
 		Authentication authentication = authenticationManager
-		        .authenticate(new UsernamePasswordAuthenticationToken(userDTO.getUsername(), userDTO.getPassword()));
-		
+		        .authenticate(new UsernamePasswordAuthenticationToken(userDTO.getUsername(), userDTO.getPassword()));	
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-		String jwt = jwtUtils.generateJwtCookie(userDetails);
-		
-		return ResponseEntity.ok().body( new UserInfoResponse(userDetails.getId(),
+		String jwt = jwtUtils.generateJwtCookie(userDetails);		
+		return ResponseEntity.ok().body( new UserInfoResponse(userDetails.getUserid(),
                 userDetails.getUsername(),jwt));
 	}
 	/*
@@ -129,10 +103,6 @@ public class AuthController {
 		
 	       }
 	
-	@GetMapping("/getallrole")
-	public  List<RolesDTO> getAllRoles() {
-		return rolesService.getAllRoles();
-	    }
 	
 
 	@PostMapping("/forgotpassword")

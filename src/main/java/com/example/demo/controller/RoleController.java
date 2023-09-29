@@ -38,8 +38,8 @@ public  List<RolesDTO> getAllRoles() {
     }
 //to view role by id
 @GetMapping("/role/{id}")
-public ResponseEntity<RolesDTO> getRoleById(@PathVariable Integer roleid){
-	RolesDTO roledto= roleService.getRolesById(roleid);
+public ResponseEntity<RolesDTO> getRoleById(@PathVariable Integer id){
+	RolesDTO roledto= roleService.getRolesById(id);
 	 return new ResponseEntity<RolesDTO>(roledto,HttpStatus.OK);
     }
 //to update role
