@@ -10,9 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.example.demo.dto.RolesDTO;
-
 import lombok.Data;
 
 @Entity
@@ -35,5 +32,14 @@ public class UserDetail {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="role_id", referencedColumnName="id")
 	private Roles roles;
+	
+
+	/*
+	 * @OneToOne(cascade = CascadeType.ALL)
+	 * 
+	 * @JoinColumn(name = "user_id", referencedColumnName = "userid") private User
+	 * user;
+	 */
+	
 					 
 }

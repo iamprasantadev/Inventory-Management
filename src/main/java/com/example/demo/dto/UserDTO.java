@@ -11,5 +11,7 @@ public class UserDTO {
 	private UserDetailDTO userDetails;
 	private String created_at;
 	private String update_at;
+	
+	}
     
-}
+

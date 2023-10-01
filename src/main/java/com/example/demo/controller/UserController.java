@@ -13,24 +13,23 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserDetailDTO;
 import com.example.demo.service.UserDetailsService;
 
 @RestController
 @RequestMapping("/api/user")
 @CrossOrigin(origins = "*")
-
 public class UserController {
 @Autowired
 UserDetailsService userdetailsService;
 
 @PostMapping("/createuser")	
-public ResponseEntity<String>createuser(@RequestBody UserDetailDTO userdto){
+public ResponseEntity<String>createuser(@RequestBody UserDTO userdto){
 	userdetailsService.createuser(userdto);
 	return new ResponseEntity<String>(HttpStatus.CREATED);
      }	
-
-
 
  // to view get all user
 
@@ -53,13 +52,14 @@ public ResponseEntity<UserDetailDTO> updateUser( @RequestBody UserDetailDTO user
      return new ResponseEntity<UserDetailDTO>(HttpStatus.OK);
      }
 // to delete user
-
-@DeleteMapping("/deleteuser/{id}")
-public String deleteCourse(@PathVariable("id") int id) {
-	userdetailsService.deleteUserById(id);
-    return "Successfully Deleted";
-     }
-
- }
+	
+  @PostMapping("/deleteuser/{id}")
+  public ResponseEntity<String> deleteUser(@PathVariable("id") int id) { 
+	  String msg=userdetailsService.deleteUserById(id); 
+	 return new ResponseEntity<String>(msg,HttpStatus.OK); 
+	 }
+		 
+	}
+ 
 
 

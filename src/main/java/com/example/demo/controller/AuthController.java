@@ -12,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -108,11 +110,15 @@ public class AuthController {
 	@PostMapping("/forgotpassword")
 	public ResponseEntity<UUID> forgotPassword(@RequestBody UserDTO userDTO) {
 	UUID generatedUuid=userService.forgotpassword(userDTO);
-	return new ResponseEntity<UUID>(generatedUuid,HttpStatus.OK);
-	 
-
-	       
+	return new ResponseEntity<UUID>(generatedUuid,HttpStatus.OK);	       
 }
+	
+/*
+ * @DeleteMapping("/deleteuser/{id}") public ResponseEntity<String>
+ * deleteUser(@PathVariable("id") int id) { String
+ * msg=userService.deleteUserById(id); return new
+ * ResponseEntity<String>(msg,HttpStatus.OK); }
+ */
 	}
 
 

@@ -4,16 +4,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entity.Roles;
 import com.example.demo.entity.Status;
 import com.example.demo.entity.User;
+import com.example.demo.entity.UserDetail;
 import com.example.demo.repository.RoleRepo;
 import com.example.demo.repository.UserRepo;
 @Service
@@ -28,16 +27,15 @@ public class UserService {
 	@Autowired
 	ModelMapper modelMapper;
 	
-	private static final long EXPIRE_TOKEN_AFTER_MINUTES = 30;
+	private static final long EXPIRE_TOKEN_AFTER_MINUTES = 60;
 	
 	public Boolean existsByUsername(String username) {
 		return userRepo.existsByUsername(username);
 	}
 	
-	 public User saveUser(UserDTO userdto) {
-			
+	 public User saveUser(UserDTO userdto) {			
 			  User user= modelMapper.map(userdto, User.class);
-			  user.getUserDetail().setStatus(Status.Active); 
+			  user.getUserDetail().setStatus(Status.active); 
 			  Roles role=roleRepo.findByTitle("Admin"); 
               user.getUserDetail().setRoles(role);
 			  user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -58,6 +56,8 @@ public class UserService {
 	  user.setLastlogin(dtf.format(now));
 	  userRepo.save(user);
 		 }
+
+	    	
 	 }
 	 
 
@@ -91,11 +91,14 @@ public class UserService {
 		 }
 	 }
 
-	
-	    }
-
-	
-
+		/*
+		 * public String deleteUserById( Integer id) { Optional<User> user =
+		 * userRepo.findById(id); if(user.isPresent()) {
+		 * user.get().getUserDetail().setStatus(Status.inactive);
+		 * userRepo.save(user.get()); return "Successfully Deleted"; } return
+		 * "User could not be found"; }
+		 */
+      }
 
 	 
 	 
