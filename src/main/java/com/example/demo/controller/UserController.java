@@ -46,9 +46,9 @@ public ResponseEntity<UserDetailDTO> getUserById(@PathVariable Integer id) {
      }
 // to update user
 
-@PutMapping("/updateuser")
-public ResponseEntity<UserDetailDTO> updateUser( @RequestBody UserDetailDTO userDTO){
-	 userdetailsService.updateuser(userDTO);
+@PutMapping("/updateuser/{id}")
+public ResponseEntity<UserDetailDTO> updateUser(@PathVariable("id") int id, @RequestBody UserDTO userDTO){
+	 userdetailsService.updateuser(id, userDTO);
      return new ResponseEntity<UserDetailDTO>(HttpStatus.OK);
      }
 // to delete user

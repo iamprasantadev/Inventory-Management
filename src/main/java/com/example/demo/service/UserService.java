@@ -43,7 +43,8 @@ public class UserService {
      		  LocalDateTime now = LocalDateTime.now();  
      		  user.setCreated_at(dtf.format(now));
      		  user.setUpdate_at(dtf.format(now));
-			 
+     		  user.getUserDetail().setCreated_at(dtf.format(now));
+     		  user.getUserDetail().setUpdate_at(dtf.format(now));
 	        return  userRepo.save(user);
 	    }
 	 

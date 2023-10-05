@@ -13,23 +13,29 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name="permissions")
 public class Permissions {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
-	private Integer permissionsid;
+	private Integer id;
 	private String title;
 	private String description;
 	private Integer active;
 	private String created_at;
 	private String updated_at;
 
-	/*
-	 * @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy =
-	 * "permissions") private Set<Roles> roles = new HashSet<>();
-	 */
+	
+	
+  @ManyToMany(fetch = FetchType.LAZY,cascade =
+  CascadeType.ALL ,mappedBy = "permissions") 
+  private Set<Roles> roles = new HashSet<>();
+	 
+	 
 }

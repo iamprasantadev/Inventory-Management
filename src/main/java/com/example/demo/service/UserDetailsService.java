@@ -43,10 +43,12 @@ public class UserDetailsService {
 	    user.setUpdate_at(dtf.format(now));		
     	user.getUserDetail().setStatus(Status.active);
     	//userdetail.setStatus(Status.inactive);
-    	Roles role = rolesRepo.findByTitle(userdto.getUserDetails().getTitle());
-    	user.getUserDetail().setRoles(role); 
-    	user.getUserDetail().setCreated_at(dtf.format(now));
-    	user.getUserDetail().setUpdate_at(dtf.format(now));
+    	
+    	//Roles role = rolesRepo.findByTitle(userdto.getUserDetails().getTitle());
+    	//user.getUserDetail().setRoles(role); 
+    	//user.setPassword(passwordEncoder.encode(user.getPassword()));
+    	//user.getUserDetail().setCreated_at(dtf.format(now));
+    	//user.getUserDetail().setUpdate_at(dtf.format(now));
         userRepo.save(user);
     	  }
       	   
@@ -70,18 +72,27 @@ public class UserDetailsService {
     		 return null;
     	     }
     			
-   	public String updateuser( UserDetailDTO userDetailsDTO) {
+   	public String updateuser(int id, UserDTO userDTO) {
    		try {
    			LOGGER.info("Update BY Id");   		
-    	Optional<UserDetail> userOptional =userDetailsRepo.findById(userDetailsDTO.getId());
+    	Optional<User> userOptional = userRepo.findById(id);
     	 if(userOptional.isPresent()) {
-    		 UserDetail user=userOptional.get();
-    		 user.setFirstname(userDetailsDTO.getFirstname());
-    		 user.setLastname(userDetailsDTO.getLastname());
-    		 user.setMobile(userDetailsDTO.getMobile());
-    		 user.setEmail(userDetailsDTO.getEmail());
-    		 user.setStatus(userDetailsDTO.getStatus());
-    		 userDetailsRepo.save(user);    			
+    		 User user=userOptional.get();
+    		 user.setUsername(userDTO.getUsername());
+    		 user.setPassword(userDTO.getPassword());
+    		 user.setUpdate_at(userDTO.getUpdate_at());
+    		 //UserDetail userdetail = userDetailsRepo.findAll(userDTO.getUserDetails().getFirstname());
+    		 //user.setFirstname(user.getUserDetail().getFirstname());
+    		 //user.setLastname(userDetailsDTO.getLastname());
+    		 //user.setMobile(userDetailsDTO.getMobile());
+    		 //user.setStatus(userDetailsDTO.getStatus());
+    		 //Roles Role = new Roles();
+    		// user.setRoles(Role);
+    		 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    		 LocalDateTime now = LocalDateTime.now(); 
+    		 user.setCreated_at(dtf.format(now));
+    		 user.setUpdate_at(dtf.format(now));
+    		 //userDetailsRepo.save(user);    			
     		 return "Update"; 
     	 }           }catch(Exception ex) {
     	   	    	ex.printStackTrace();

@@ -1,5 +1,9 @@
 package com.example.demo.dto;
 
+import java.util.Set;
+
+import com.example.demo.entity.Status;
+
 import lombok.Data;
 
 @Data
@@ -10,10 +14,12 @@ public class UserDetailDTO {
 	private String lastname;
 	private String email;
 	private Long mobile;
-	private String password;
 	private String created_at;
-	private Integer userid;
-	private Integer roleid;
+	private String update_at;
+	private String title;
+	private Status status;
+	private Set<RolesDTO> roles;
+	
 	
    }
 

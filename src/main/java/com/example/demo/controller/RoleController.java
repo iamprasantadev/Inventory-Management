@@ -31,10 +31,15 @@ public ResponseEntity<String>createuser(@RequestBody RolesDTO roledto){
 	roleService.createrole(roledto);
 	return new ResponseEntity<String>(HttpStatus.CREATED);
     }
-// to get all role
+//to get all role
 @GetMapping("/getallrole")
-public  List<RolesDTO> getAllRoles() {
+public List<RolesDTO>getAllRoles(){
 	return roleService.getAllRoles();
+  }
+// to get all role by permissions
+@GetMapping("/getallrole/{id}")
+public  List<RolesDTO> getAllRoles(@PathVariable ("id") Integer id) {
+	return roleService.getAllRoles(id);
     }
 //to view role by id
 @GetMapping("/role/{id}")
