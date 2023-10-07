@@ -48,7 +48,7 @@ public class UserDetailsService {
     	user.getUserDetail().setStatus(Status.active);	
     	Roles role = rolesRepo.findByTitle(userdto.getUserDetail().getTitle());
     	user.getUserDetail().setRoles(role);
-    	user.getUserDetail().setStatus(Status.active);
+    	//user.getUserDetail().setStatus(Status.active);
     	user.setPassword(passwordEncoder.encode(user.getPassword()));
     	user.getUserDetail().setCreated_at(dtf.format(now));
     	user.getUserDetail().setUpdate_at(dtf.format(now));
