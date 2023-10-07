@@ -3,6 +3,8 @@ package com.example.demo;
 import java.util.Arrays;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.config.Configuration.AccessLevel;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -21,8 +23,13 @@ public class ManagementProjectApplication {
 	}
 	@Bean 
 	public ModelMapper modelMapper() {
-		
-		return new ModelMapper();
+		 ModelMapper modelMapper = new ModelMapper();
+		 modelMapper.getConfiguration()
+         .setFieldAccessLevel(AccessLevel.PRIVATE)
+         .setMatchingStrategy(MatchingStrategies.STANDARD)
+         .setSkipNullEnabled(true);
+		 return modelMapper;
+
 	   }
 	@Bean
 	@Primary

@@ -22,44 +22,41 @@ import com.example.demo.service.UserDetailsService;
 @RequestMapping("/api/user")
 @CrossOrigin(origins = "*")
 public class UserController {
-@Autowired
-UserDetailsService userdetailsService;
+	@Autowired
+	UserDetailsService userdetailsService;
 
-@PostMapping("/createuser")	
-public ResponseEntity<String>createuser(@RequestBody UserDTO userdto){
-	userdetailsService.createuser(userdto);
-	return new ResponseEntity<String>(HttpStatus.CREATED);
-     }	
+	@PostMapping("/createuser")
+	public ResponseEntity<String> createuser(@RequestBody UserDTO userdto) {
+		userdetailsService.createuser(userdto);
+		return new ResponseEntity<String>(HttpStatus.CREATED);
+	}
 
- // to view get all user
+	// to view get all user
 
-@GetMapping("/getalluser")
-public  List<UserDetailDTO> getAllUserdetails() {
-	return userdetailsService.getAllUserdetail();
-     }
+	@GetMapping("/getalluser")
+	public List<UserDetailDTO> getAllUserdetails() {
+		return userdetailsService.getAllUserdetail();
+	}
 // to view user by id
 
-@GetMapping("/user/{id}")
-public ResponseEntity<UserDetailDTO> getUserById(@PathVariable Integer id) {
-	UserDetailDTO userdto= userdetailsService.getUserdetailsById(id);
-	 return new ResponseEntity<UserDetailDTO>(userdto,HttpStatus.OK);
-     }
+	@GetMapping("/user/{id}")
+	public ResponseEntity<UserDetailDTO> getUserById(@PathVariable Integer id) {
+		UserDetailDTO userdto = userdetailsService.getUserdetailsById(id);
+		return new ResponseEntity<UserDetailDTO>(userdto, HttpStatus.OK);
+	}
 // to update user
 
-@PutMapping("/updateuser/{id}")
-public ResponseEntity<UserDetailDTO> updateUser(@PathVariable("id") int id, @RequestBody UserDTO userDTO){
-	 userdetailsService.updateuser(id, userDTO);
-     return new ResponseEntity<UserDetailDTO>(HttpStatus.OK);
-     }
-// to delete user
-	
-  @PostMapping("/deleteuser/{id}")
-  public ResponseEntity<String> deleteUser(@PathVariable("id") int id) { 
-	  String msg=userdetailsService.deleteUserById(id); 
-	 return new ResponseEntity<String>(msg,HttpStatus.OK); 
-	 }
-		 
+	@PutMapping("/updateuser")
+	public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO) {
+		userDTO = userdetailsService.updateuser(userDTO);
+		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
 	}
- 
+// to delete user
 
+	@PostMapping("/deleteuser/{id}")
+	public ResponseEntity<String> deleteUser(@PathVariable("id") int id) {
+		String msg = userdetailsService.deleteUserById(id);
+		return new ResponseEntity<String>(msg, HttpStatus.OK);
+	}
 
+}

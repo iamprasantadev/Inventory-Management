@@ -2,8 +2,11 @@ package com.example.demo.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.slf4j.Logger;
@@ -13,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserDetailDTO;
+import com.example.demo.entity.Permissions;
 import com.example.demo.entity.Roles;
 import com.example.demo.entity.Status;
 import com.example.demo.entity.User;
@@ -41,14 +45,13 @@ public class UserDetailsService {
 	    LocalDateTime now = LocalDateTime.now();  
 	    user.setCreated_at(dtf.format(now)); 
 	    user.setUpdate_at(dtf.format(now));		
+    	user.getUserDetail().setStatus(Status.active);	
+    	Roles role = rolesRepo.findByTitle(userdto.getUserDetail().getTitle());
+    	user.getUserDetail().setRoles(role);
     	user.getUserDetail().setStatus(Status.active);
-    	//userdetail.setStatus(Status.inactive);
-    	
-    	//Roles role = rolesRepo.findByTitle(userdto.getUserDetails().getTitle());
-    	//user.getUserDetail().setRoles(role); 
-    	//user.setPassword(passwordEncoder.encode(user.getPassword()));
-    	//user.getUserDetail().setCreated_at(dtf.format(now));
-    	//user.getUserDetail().setUpdate_at(dtf.format(now));
+    	user.setPassword(passwordEncoder.encode(user.getPassword()));
+    	user.getUserDetail().setCreated_at(dtf.format(now));
+    	user.getUserDetail().setUpdate_at(dtf.format(now));
         userRepo.save(user);
     	  }
       	   
@@ -72,32 +75,28 @@ public class UserDetailsService {
     		 return null;
     	     }
     			
-   	public String updateuser(int id, UserDTO userDTO) {
+   	public UserDTO updateuser( UserDTO userDTO) {
    		try {
-   			LOGGER.info("Update BY Id");   		
-    	Optional<User> userOptional = userRepo.findById(id);
+   			LOGGER.info("Update BY Id");
+   		User userEntity = modelMapper.map(userDTO,User.class);
+    	Optional<User> userOptional = userRepo.findById(userDTO.getUserid());
     	 if(userOptional.isPresent()) {
-    		 User user=userOptional.get();
-    		 user.setUsername(userDTO.getUsername());
-    		 user.setPassword(userDTO.getPassword());
-    		 user.setUpdate_at(userDTO.getUpdate_at());
-    		 //UserDetail userdetail = userDetailsRepo.findAll(userDTO.getUserDetails().getFirstname());
-    		 //user.setFirstname(user.getUserDetail().getFirstname());
-    		 //user.setLastname(userDetailsDTO.getLastname());
-    		 //user.setMobile(userDetailsDTO.getMobile());
-    		 //user.setStatus(userDetailsDTO.getStatus());
-    		 //Roles Role = new Roles();
-    		// user.setRoles(Role);
-    		 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-    		 LocalDateTime now = LocalDateTime.now(); 
-    		 user.setCreated_at(dtf.format(now));
-    		 user.setUpdate_at(dtf.format(now));
-    		 //userDetailsRepo.save(user);    			
-    		 return "Update"; 
+    		//User userEntity = modelMapper.map(userDTO,User.class);
+    		 modelMapper.map(userEntity, userOptional.get());
+    		 User user = userOptional.get();
+    		 Roles role = rolesRepo.findByTitle(userDTO.getUserDetail().getRoles().getTitle());
+    	     user.getUserDetail().setRoles(role);
+    	     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    		 LocalDateTime now = LocalDateTime.now();
+    		 user.getUserDetail().setUpdate_at(dtf.format(now));
+    		 user.setPassword(passwordEncoder.encode(user.getPassword()));
+    		 user=userRepo.save(user); 
+    		 userDTO=modelMapper.map(user, UserDTO.class);
+    		 return userDTO; 
     	 }           }catch(Exception ex) {
     	   	    	ex.printStackTrace();
     	   	    	LOGGER.error(ex.getMessage());	 		
-    	 } return "Not Updated";		
+    	 } return null;		
    	}
    			
     	 public String deleteUserById( Integer id) {

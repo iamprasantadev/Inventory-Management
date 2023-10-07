@@ -8,7 +8,7 @@ public class UserDTO {
 	private String password;
 	private String lastlogin;
 	private String code;
-	private UserDetailDTO userDetails;
+	private UserDetailDTO userDetail;
 	private String created_at;
 	private String update_at;
 	

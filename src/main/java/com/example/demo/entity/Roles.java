@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,5 +36,8 @@ public class Roles {
 	})
 	@JoinTable(name="role_permissions", joinColumns = @JoinColumn(name = "roleid"), inverseJoinColumns = @JoinColumn(name = "permissionsid"))
 	private Set<Permissions> permissions = new HashSet<>();
-	 	 
+	
+	//@ManyToMany(fetch = FetchType.LAZY,cascade =
+    //CascadeType.ALL ,mappedBy = "roles") 
+	//private Set<UserDetail> userdetail = new HashSet<>();
 }

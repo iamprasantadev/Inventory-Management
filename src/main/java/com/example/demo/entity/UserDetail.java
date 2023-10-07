@@ -1,19 +1,13 @@
 package com.example.demo.entity;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Data;
@@ -36,6 +30,7 @@ public class UserDetail {
 	private Status status;
 	
 	
+	
 	/*
 	 * @ManyToMany(fetch = FetchType.LAZY,cascade = { CascadeType.ALL })
 	 * 
@@ -43,21 +38,9 @@ public class UserDetail {
 	 * "userdetailsid"), inverseJoinColumns = @JoinColumn(name = "roleid")) private
 	 * Set<Roles> roles = new HashSet<>();
 	 */
-	
-	
-	
-	
+		
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="role_id", referencedColumnName="id")
 	private Roles roles;
-	
-
-	/*
-	 * @OneToOne(cascade = CascadeType.ALL)
-	 * 
-	 * @JoinColumn(name = "user_id", referencedColumnName = "userid") private User
-	 * user;
-	 */
-	
-					 
-}
+						 
+  }
