@@ -34,9 +34,16 @@ public class UserController {
 	// to view get all user
 
 	@GetMapping("/getalluser")
-	public List<UserDetailDTO> getAllUserdetails() {
+	public List<UserDTO> getAllUserdetails() {
 		return userdetailsService.getAllUserdetail();
 	}
+	// to get active users
+	@GetMapping("/getActiveUser")
+	public List<UserDTO>getAllActiveUsers(){
+		return userdetailsService.getAllActiveUsers();
+	}
+	
+	
 // to view user by id
 
 	@GetMapping("/user/{id}")

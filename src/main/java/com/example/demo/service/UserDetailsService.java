@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -46,7 +47,7 @@ public class UserDetailsService {
 	    user.setCreated_at(dtf.format(now)); 
 	    user.setUpdate_at(dtf.format(now));		
     	user.getUserDetail().setStatus(Status.active);	
-    	Roles role = rolesRepo.findByTitle(userdto.getUserDetail().getTitle());
+    	Roles role = rolesRepo.findById(userdto.getUserDetail().getRoles().getId()).get();
     	user.getUserDetail().setRoles(role);
     	//user.getUserDetail().setStatus(Status.active);
     	user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -55,13 +56,13 @@ public class UserDetailsService {
         userRepo.save(user);
     	  }
       	   
-    	public  List<UserDetailDTO> getAllUserdetail(){    			    		
-   		List<UserDetail> UserdetailList=userDetailsRepo.findAll();	
-    		List<UserDetailDTO> userdetailDTOList= modelMapper.map(UserdetailList,new TypeToken<List<UserDetailDTO>>() {}.getType() );    	     
-    		for(UserDetailDTO dto:userdetailDTOList) {
-    			dto.setTitle(UserdetailList.stream()
-    					.filter(user->user.getId()==dto.getId())
-    					.findAny().get().getRoles().getTitle());
+    	public  List<UserDTO> getAllUserdetail(){    			    		
+   		List<User> UserdetailList = userRepo.findAll();	
+    		List<UserDTO> userdetailDTOList= modelMapper.map(UserdetailList,new TypeToken<List<UserDTO>>() {}.getType() );    	     
+    		for(UserDTO dto:userdetailDTOList) {
+    			dto.getUserDetail().setTitle(UserdetailList.stream()
+    					.filter(user->user.getUserDetail().getId()==dto.getUserDetail().getId())
+    					.findAny().get().getUserDetail().getRoles().getTitle());
    		 }        
     		return userdetailDTOList;     				
     		}
@@ -84,12 +85,14 @@ public class UserDetailsService {
     		//User userEntity = modelMapper.map(userDTO,User.class);
     		 modelMapper.map(userEntity, userOptional.get());
     		 User user = userOptional.get();
-    		 Roles role = rolesRepo.findByTitle(userDTO.getUserDetail().getRoles().getTitle());
+    		 Roles role = rolesRepo.findById(userDTO.getUserDetail().getRoles().getId()).get();
     	     user.getUserDetail().setRoles(role);
     	     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
     		 LocalDateTime now = LocalDateTime.now();
+    		 user.getUserDetail().setCreated_at(dtf.format(now));
     		 user.getUserDetail().setUpdate_at(dtf.format(now));
     		 user.setPassword(passwordEncoder.encode(user.getPassword()));
+    		 //user.getUserDetail().setStatus(Status.active);
     		 user=userRepo.save(user); 
     		 userDTO=modelMapper.map(user, UserDTO.class);
     		 return userDTO; 
@@ -114,6 +117,19 @@ public class UserDetailsService {
    	    }
     		 return "User could not be found";
      }
+    	 
+    	 
+    	 public List<UserDTO> getAllActiveUsers() {
+    		    List<User> users = userRepo.findAll();
+
+    		    return users.stream()
+    		            .filter(user -> user.getUserDetail().getStatus() == Status.active)
+    		            .map(user -> {
+    		                UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+    		                userDTO.getUserDetail().setTitle(user.getUserDetail().getRoles().getTitle());
+    		                return userDTO;
+    		            })
+    		            .collect(Collectors.toList());
+    		}
+
 }
-
-

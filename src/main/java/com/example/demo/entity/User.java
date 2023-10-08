@@ -26,9 +26,9 @@ public class User {
 	private String update_at;
 	
 	
-	  @OneToOne(cascade = CascadeType.ALL)	  
-	  @JoinColumn(name = "userdetails_id", referencedColumnName = "id") 
-	  private UserDetail userDetail;
+   @OneToOne(cascade = CascadeType.ALL)	  
+   @JoinColumn(name = "userdetails_id", referencedColumnName = "id") 
+   private UserDetail userDetail;
 	 
 
 }
