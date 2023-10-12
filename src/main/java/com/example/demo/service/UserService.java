@@ -48,18 +48,17 @@ public class UserService {
 	        return  userRepo.save(user);
 	    }
 	 
-	 public void lastLogin(UserDTO userDTO) {
-		 //User user=userRepo.findByUserid(userDTO.getUserid());
-		 User user=null;
-		 if(user!=null) {
-		 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-	  LocalDateTime now = LocalDateTime.now();
-	  user.setLastlogin(dtf.format(now));
-	  userRepo.save(user);
-		 }
+		/*
+		 * public void lastLogin(UserDTO userDTO) { //User
+		 * user=userRepo.findByUserid(userDTO.getUserid()); User user=null;
+		 * if(user!=null) { DateTimeFormatter dtf =
+		 * DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"); LocalDateTime now =
+		 * LocalDateTime.now(); user.setLastlogin(dtf.format(now)); userRepo.save(user);
+		 * }
+		 */
 
-	    	
-	 }
+    	
+	 //}
 	 
 
 

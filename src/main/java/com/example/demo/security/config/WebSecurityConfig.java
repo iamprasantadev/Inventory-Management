@@ -52,14 +52,18 @@ public class WebSecurityConfig {
 	}
 	@Bean
 	protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-        .cors(cors -> cors.disable())
+       
+		http.cors();
+		
+		http.csrf(csrf -> csrf.disable())
+        //.cors(cors -> cors.disable())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         (auth.antMatchers("/api/auth/**", "/swagger-ui/**", "/v2/api-docs", "/swagger-resources/**", "/webjars/**")).permitAll()
                                 //.requestMatchers("/api/test/**").permitAll()
                                 .anyRequest().authenticated()
+                                
                 );
 	    
 	    http.authenticationProvider(authenticationProvider());

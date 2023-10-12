@@ -20,7 +20,7 @@ import com.example.demo.service.RolesService;
 
 @RestController
 @RequestMapping("/api/role")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class RoleController {
 
 @Autowired	
@@ -50,7 +50,7 @@ public ResponseEntity<RolesDTO> getRoleById(@PathVariable Integer id){
 //to update role
 @PutMapping("/updaterole")
 public ResponseEntity<RolesDTO> updateRole( @RequestBody  Roles role){
-	 roleService.updaterole(role);
+	// roleService.updaterole(role);
     return new ResponseEntity<RolesDTO>(HttpStatus.OK);
     }
 // to delete role

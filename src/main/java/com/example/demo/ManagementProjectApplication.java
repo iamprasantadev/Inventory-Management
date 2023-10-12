@@ -13,6 +13,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "com.example.demo")
@@ -34,14 +37,13 @@ public class ManagementProjectApplication {
 	@Bean
 	@Primary
 	CorsConfigurationSource corsConfigurationSource() {
-
 	    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 	    CorsConfiguration config = new CorsConfiguration();
 	    source.registerCorsConfiguration("/**", config.applyPermitDefaultValues());
 	    //allow Authorization to be exposed
 	    config.setExposedHeaders(Arrays.asList("Authorization"));
-
+        
 	    return source;
 	}
-
+	
 }

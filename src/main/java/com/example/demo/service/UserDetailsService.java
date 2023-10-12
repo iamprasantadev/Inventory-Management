@@ -2,12 +2,9 @@ package com.example.demo.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.slf4j.Logger;
@@ -17,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserDetailDTO;
-import com.example.demo.entity.Permissions;
 import com.example.demo.entity.Roles;
 import com.example.demo.entity.Status;
 import com.example.demo.entity.User;
@@ -58,14 +54,14 @@ public class UserDetailsService {
       	   
     	public  List<UserDTO> getAllUserdetail(){    			    		
    		List<User> UserdetailList = userRepo.findAll();	
-    		List<UserDTO> userdetailDTOList= modelMapper.map(UserdetailList,new TypeToken<List<UserDTO>>() {}.getType() );    	     
+    		List<UserDTO> userdetailDTOList= modelMapper.map(UserdetailList,new TypeToken<List<UserDTO>>(){}.getType());    	     
     		for(UserDTO dto:userdetailDTOList) {
     			dto.getUserDetail().setTitle(UserdetailList.stream()
     					.filter(user->user.getUserDetail().getId()==dto.getUserDetail().getId())
     					.findAny().get().getUserDetail().getRoles().getTitle());
-   		 }        
-    		return userdetailDTOList;     				
-    		}
+   		     }        
+    		  return userdetailDTOList;     				
+    		   }
     	
     	public UserDetailDTO getUserdetailsById(Integer id) {
     		 Optional<UserDetail> user=userDetailsRepo.findById(id);
@@ -92,7 +88,7 @@ public class UserDetailsService {
     		 user.getUserDetail().setCreated_at(dtf.format(now));
     		 user.getUserDetail().setUpdate_at(dtf.format(now));
     		 user.setPassword(passwordEncoder.encode(user.getPassword()));
-    		 //user.getUserDetail().setStatus(Status.active);
+    		 user.getUserDetail().setStatus(Status.active);
     		 user=userRepo.save(user); 
     		 userDTO=modelMapper.map(user, UserDTO.class);
     		 return userDTO; 

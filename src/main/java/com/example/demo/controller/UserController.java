@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +19,7 @@ import com.example.demo.service.UserDetailsService;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
 	@Autowired
 	UserDetailsService userdetailsService;
@@ -53,7 +52,7 @@ public class UserController {
 	}
 // to update user
 
-	@PutMapping("/updateuser")
+	@PostMapping("/updateuser")
 	public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO) {
 		userDTO = userdetailsService.updateuser(userDTO);
 		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);

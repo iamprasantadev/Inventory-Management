@@ -79,20 +79,31 @@ public void createrole(RolesDTO roledto){
 		     }
 		 return null;
 	     }
-	public String updaterole( Roles roles) {				  		
-		Optional<Roles> update =roleRepo.findById(roles.getId());
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-		  LocalDateTime now = LocalDateTime.now();
-		  roles.setUpdate_at(dtf.format(now));
-		 if(!update.isPresent()&&update.isPresent()) {
-			update.get().setTitle(roles.getTitle());
-			update.get().setDescription(roles.getDescription());
-			update.get().setActive(roles.getActive());	  
-			roleRepo.save(update.get());		
-			 return "Update"; 			 
-		 }		 		
-		 return "Not Updated";		
-	     }
+//	public String updaterole( RolesDTO rolesDTO) {
+//		Roles rolesentity = modelMapper.map(rolesDTO, Roles.class);
+//		Optional<Roles> roleoptional =roleRepo.findById(rolesDTO.getId());
+//		   if(roleoptional.isPresent());
+//		   modelMapper.map(rolesentity,roleoptional.get());
+//		   Roles roles = roleoptional.get();
+//		   if(rolesDTO.getPermissions()!=null); 
+//			  Set<Permissions> permissions = new HashSet<>();
+//			 // rolesDTO.getPermissions().stream().forEach(per ->{
+//			  Permissions permission = permissionsRepo.findById(rolesDTO.getPermissions().get);
+//		 
+//		   
+//		   
+//		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+//		  LocalDateTime now = LocalDateTime.now();
+//		  roles.setUpdate_at(dtf.format(now));
+//		 if(!update.isPresent()&&update.isPresent()) {
+//			update.get().setTitle(roles.getTitle());
+//			update.get().setDescription(roles.getDescription());
+//			update.get().setActive(roles.getActive());	  
+//			roleRepo.save(update.get());		
+//			 return "Update"; 			 
+//		 }		 		
+//		 return "Not Updated";		
+//	     }
 	public int deleteRolesById( Integer roleid) {
 	    Optional<Roles> roles = roleRepo.findById(roleid);
 	    if(roles.isPresent()) {

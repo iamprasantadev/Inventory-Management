@@ -60,11 +60,11 @@ public class AuthController {
 
 	
 
-	@PostMapping("/lastlogin")
-	public ResponseEntity<?> saveLastLogin(@RequestBody UserDTO userDTO) {
-		userService.lastLogin(userDTO);
-		return new ResponseEntity(HttpStatus.OK);
-	}
+	/*
+	 * @PostMapping("/lastlogin") public ResponseEntity<?>
+	 * saveLastLogin(@RequestBody UserDTO userDTO) { userService.lastLogin(userDTO);
+	 * return new ResponseEntity(HttpStatus.OK); }
+	 */
 
 
 	
