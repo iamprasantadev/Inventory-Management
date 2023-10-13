@@ -28,6 +28,7 @@ public class Permissions {
 	private String title;
 	private String description;
 	private Integer active;
+	private Status status;
 	private String created_at;
 	private String updated_at;
 
@@ -36,6 +37,10 @@ public class Permissions {
   @ManyToMany(fetch = FetchType.LAZY,cascade =
   CascadeType.ALL ,mappedBy = "permissions") 
   private Set<Roles> roles = new HashSet<>();
+
+
+
+
 	 
 	 
 }

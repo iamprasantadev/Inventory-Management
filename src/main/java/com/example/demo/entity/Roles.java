@@ -5,6 +5,8 @@ import java.util.Set;
 import javax.persistence.JoinColumn;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,10 +29,11 @@ public class Roles {
 	private Integer id;
 	private String title;
 	private String description;
-	private Integer active;
+	//private Integer active;
 	private String created_at;
 	private String update_at;
-		
+	@Enumerated(EnumType.STRING)
+	private Status status;	
 	@ManyToMany(fetch = FetchType.LAZY,cascade = {
 	CascadeType.ALL
 	})

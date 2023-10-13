@@ -9,25 +9,35 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.dto.PermissionsDTO;
+import com.example.demo.dto.RolesDTO;
 import com.example.demo.entity.Permissions;
+import com.example.demo.entity.Roles;
+import com.example.demo.entity.Status;
 import com.example.demo.repository.PermissionsRepo;
+import com.example.demo.repository.RoleRepo;
 
 @Service
 public class PermissionsService {
 @Autowired    
 PermissionsRepo permissionsRepo;
 @Autowired
+RoleRepo roleRepo;
+@Autowired
 ModelMapper modelMapper;
 
-public void createpermissions(PermissionsDTO permissionsdto) {
-	Permissions permissions = modelMapper.map(permissionsdto, Permissions.class);
-	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-	  LocalDateTime now = LocalDateTime.now();
-	  permissions.setCreated_at(dtf.format(now));
-	  permissions.setUpdated_at(dtf.format(now));
-	  permissionsRepo.save(permissions);
-      }
 
+  public void createpermissions(PermissionsDTO permissionsdto) { Permissions
+  permissions = modelMapper.map(permissionsdto, Permissions.class);
+  permissions.setStatus(Status.active); 
+  //Roles role = roleRepo.findById(permissionsdto); 
+  //permissions.setRoles(role);
+  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+  LocalDateTime now = LocalDateTime.now();
+  permissions.setCreated_at(dtf.format(now));
+  permissions.setUpdated_at(dtf.format(now));
+  permissionsRepo.save(permissions); 
+  }
+ 
 public  List<PermissionsDTO> getAllPermissions(){
 	List<Permissions> permissionList=permissionsRepo.findAll();
 	List<PermissionsDTO> permissionsdtoList= modelMapper.map(permissionList,new TypeToken<List<PermissionsDTO>>() {}.getType() );

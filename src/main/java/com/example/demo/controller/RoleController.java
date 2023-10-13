@@ -48,16 +48,16 @@ public ResponseEntity<RolesDTO> getRoleById(@PathVariable Integer id){
 	 return new ResponseEntity<RolesDTO>(roledto,HttpStatus.OK);
     }
 //to update role
-@PutMapping("/updaterole")
-public ResponseEntity<RolesDTO> updateRole( @RequestBody  Roles role){
-	// roleService.updaterole(role);
+@PostMapping("/updaterole")
+public ResponseEntity<RolesDTO> updateRole( @RequestBody  RolesDTO role){
+	 roleService.updaterole(role);
     return new ResponseEntity<RolesDTO>(HttpStatus.OK);
     }
 // to delete role
-@DeleteMapping("/deleterole/{roleid}")
-public String deleteRole(@PathVariable("roleid") int roleid){
-	roleService.deleteRolesById(roleid);
-  return "Successfully Deleted";
+@PostMapping("/inactiveRolesById/{id}")
+public String inactiveRolesById(@PathVariable("id") int id){
+   roleService.inactiveRolesById(id);
+  return "Successfully Marked as Inactive";
     }
 
 	

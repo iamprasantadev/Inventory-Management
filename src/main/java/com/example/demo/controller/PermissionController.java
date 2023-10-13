@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.PermissionsDTO;
+import com.example.demo.dto.RolesDTO;
 import com.example.demo.service.PermissionsService;
 
 @RestController
@@ -26,7 +27,7 @@ PermissionsService permissionsService;
 @PostMapping("/addpermissions")
 private ResponseEntity<String>createpermissions(@RequestBody PermissionsDTO permissionsdto){
 	permissionsService.createpermissions(permissionsdto);	
-  return new ResponseEntity<String>("Succes", HttpStatus.CREATED);
+  return new ResponseEntity<String>("Permissions added succesfully", HttpStatus.CREATED);
       }
 
 @GetMapping("/getallpermissions")

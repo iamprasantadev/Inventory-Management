@@ -2,11 +2,9 @@ package com.example.demo.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
@@ -15,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.dto.RolesDTO;
 import com.example.demo.entity.Permissions;
 import com.example.demo.entity.Roles;
+import com.example.demo.entity.Status;
 import com.example.demo.repository.PermissionsRepo;
 import com.example.demo.repository.RoleRepo;
 
@@ -36,20 +35,21 @@ PropertyMap<RolesDTO,Roles>skipModifiedFieldsMap=new PropertyMap<RolesDTO,Roles>
 };
 
 public void createrole(RolesDTO roledto){
-	modelMapper.addMappings(skipModifiedFieldsMap);
+	//modelMapper.addMappings(skipModifiedFieldsMap);
 	Roles role= modelMapper.map(roledto,Roles.class);
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 		  LocalDateTime now = LocalDateTime.now();  
 		  role.setCreated_at(dtf.format(now)); 
-		  role.setUpdate_at(dtf.format(now));			
+		  role.setUpdate_at(dtf.format(now));
+		  role.setStatus(Status.active);
 	  //Set<Permissions> permissions = new HashSet<>();
-	  if(roledto.getPermissions()!=null); 
-	  Set<Permissions> permissions = new HashSet<>();
-	  roledto.getPermissions().stream().forEach(per ->{
-	 Optional <Permissions> permissionsList = permissionsRepo.findById(per.getId());
-	 if(permissionsList.isPresent()) {
-		role.getPermissions().add(permissionsList.get()); 
-	 }	  });			 
+		/*
+		 * if(roledto.getPermissions()!=null); Set<Permissions> permissions = new
+		 * HashSet<>(); roledto.getPermissions().stream().forEach(per ->{ Optional
+		 * <Permissions> permissionsList = permissionsRepo.findById(per.getId());
+		 * if(permissionsList.isPresent()) {
+		 * role.getPermissions().add(permissionsList.get()); } });
+		 */	 
 		 roleRepo.save(role);
        }
    public  List<RolesDTO> getAllRoles(Integer id){
@@ -79,38 +79,33 @@ public void createrole(RolesDTO roledto){
 		     }
 		 return null;
 	     }
-//	public String updaterole( RolesDTO rolesDTO) {
-//		Roles rolesentity = modelMapper.map(rolesDTO, Roles.class);
-//		Optional<Roles> roleoptional =roleRepo.findById(rolesDTO.getId());
-//		   if(roleoptional.isPresent());
-//		   modelMapper.map(rolesentity,roleoptional.get());
-//		   Roles roles = roleoptional.get();
-//		   if(rolesDTO.getPermissions()!=null); 
-//			  Set<Permissions> permissions = new HashSet<>();
-//			 // rolesDTO.getPermissions().stream().forEach(per ->{
-//			  Permissions permission = permissionsRepo.findById(rolesDTO.getPermissions().get);
-//		 
-//		   
-//		   
-//		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-//		  LocalDateTime now = LocalDateTime.now();
-//		  roles.setUpdate_at(dtf.format(now));
-//		 if(!update.isPresent()&&update.isPresent()) {
-//			update.get().setTitle(roles.getTitle());
-//			update.get().setDescription(roles.getDescription());
-//			update.get().setActive(roles.getActive());	  
-//			roleRepo.save(update.get());		
-//			 return "Update"; 			 
-//		 }		 		
-//		 return "Not Updated";		
-//	     }
-	public int deleteRolesById( Integer roleid) {
-	    Optional<Roles> roles = roleRepo.findById(roleid);
+			
+	public String updaterole(RolesDTO rolesDTO) {
+	    Optional<Roles> roleOptional = roleRepo.findById(rolesDTO.getId());
+
+	    if (roleOptional.isPresent()) {
+	        Roles role = roleOptional.get();
+	        modelMapper.map(rolesDTO, role);
+           DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+			LocalDateTime now = LocalDateTime.now();
+			role.setUpdate_at(dtf.format(now));		
+			roleRepo.save(role);
+			return "Role Update Succesfully";
+	}	
+	    return "Role not updated ";
+	    
+	    }
+	  
+			  
+			  	     
+	public String inactiveRolesById( Integer id) {
+	    Optional<Roles> roles = roleRepo.findById(id);
 	    if(roles.isPresent()) {
-	    	roleRepo.deleteById(roleid);
-	  	  return 0;
+	    	roles.get().setStatus(Status.inactive);
+	    	roleRepo.save(roles.get());
+	  	  return "Successfully Inactive";
 	    }else
-	  	  return 1;
+	  	  return "User already marked as a inactive";
 	    }   
 	
 	
