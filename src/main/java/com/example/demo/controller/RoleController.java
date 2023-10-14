@@ -48,7 +48,7 @@ public ResponseEntity<RolesDTO> getRoleById(@PathVariable Integer id){
 	 return new ResponseEntity<RolesDTO>(roledto,HttpStatus.OK);
     }
 //to update role
-@PostMapping("/updaterole")
+@PutMapping("/updaterole")
 public ResponseEntity<RolesDTO> updateRole( @RequestBody  RolesDTO role){
 	 roleService.updaterole(role);
     return new ResponseEntity<RolesDTO>(HttpStatus.OK);

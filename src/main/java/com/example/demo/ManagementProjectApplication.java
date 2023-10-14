@@ -34,16 +34,16 @@ public class ManagementProjectApplication {
 		 return modelMapper;
 
 	   }
-	@Bean
-	@Primary
-	CorsConfigurationSource corsConfigurationSource() {
-	    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-	    CorsConfiguration config = new CorsConfiguration();
-	    source.registerCorsConfiguration("/**", config.applyPermitDefaultValues());
-	    //allow Authorization to be exposed
-	    config.setExposedHeaders(Arrays.asList("Authorization"));
-        
-	    return source;
-	}
+//	@Bean
+//	@Primary
+//	CorsConfigurationSource corsConfigurationSource() {
+//	    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//	    CorsConfiguration config = new CorsConfiguration();
+//	    source.registerCorsConfiguration("/**", config.applyPermitDefaultValues());
+//	    //allow Authorization to be exposed
+//	    config.setExposedHeaders(Arrays.asList("Authorization"));
+//        
+//	    return source;
+//	}
 	
 }

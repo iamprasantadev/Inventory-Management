@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,6 +30,7 @@ public class Permissions {
 	private String title;
 	private String description;
 	private Integer active;
+	@Enumerated(EnumType.STRING)
 	private Status status;
 	private String created_at;
 	private String updated_at;
