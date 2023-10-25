@@ -1,7 +1,5 @@
 package com.example.demo;
 
-import java.util.Arrays;
-
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration.AccessLevel;
 import org.modelmapper.convention.MatchingStrategies;
@@ -9,13 +7,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Primary;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "com.example.demo")
@@ -26,11 +17,12 @@ public class ManagementProjectApplication {
 	}
 	@Bean 
 	public ModelMapper modelMapper() {
-		 ModelMapper modelMapper = new ModelMapper();
-		 modelMapper.getConfiguration()
-         .setFieldAccessLevel(AccessLevel.PRIVATE)
-         .setMatchingStrategy(MatchingStrategies.STANDARD)
-         .setSkipNullEnabled(true);
+		 ModelMapper modelMapper = new ModelMapper();			
+			  modelMapper.getConfiguration() 
+			  .setFieldAccessLevel(AccessLevel.PRIVATE)
+			  .setMatchingStrategy(MatchingStrategies.STANDARD) 
+			  .setSkipNullEnabled(true);
+			 
 		 return modelMapper;
 
 	   }

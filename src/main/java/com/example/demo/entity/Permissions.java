@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -29,21 +31,22 @@ public class Permissions {
 	private Integer id;
 	private String title;
 	private String description;
-	private Integer active;
+	//private Integer active;
 	@Enumerated(EnumType.STRING)
 	private Status status;
 	private String created_at;
 	private String updated_at;
-
-	
-	
-  @ManyToMany(fetch = FetchType.LAZY,cascade =
-  CascadeType.ALL ,mappedBy = "permissions") 
-  private Set<Roles> roles = new HashSet<>();
-
-
-
-
-	 
+	/*
+	 * @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy =
+	 * "permissions") private Set<Roles> roles = new HashSet<>();
+	 */
+   
+   @ManyToMany(fetch = FetchType.LAZY,cascade = {
+			CascadeType.MERGE
+	})
+	@JoinTable(name="permissions_role", joinColumns =
+	@JoinColumn(name = "permissionsid"), inverseJoinColumns = @JoinColumn(name = "roleid"))
+	private Set<Roles> roles = new HashSet<>();
+		 
 	 
 }

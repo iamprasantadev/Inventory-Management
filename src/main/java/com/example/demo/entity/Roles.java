@@ -34,13 +34,14 @@ public class Roles {
 	private String update_at;
 	@Enumerated(EnumType.STRING)
 	private Status status;	
-	@ManyToMany(fetch = FetchType.LAZY,cascade = {
-	CascadeType.ALL
-	})
-	@JoinTable(name="role_permissions", joinColumns = @JoinColumn(name = "roleid"), inverseJoinColumns = @JoinColumn(name = "permissionsid"))
-	private Set<Permissions> permissions = new HashSet<>();
-	
-	//@ManyToMany(fetch = FetchType.LAZY,cascade =
-    //CascadeType.ALL ,mappedBy = "roles") 
-	//private Set<UserDetail> userdetail = new HashSet<>();
+	/*
+	 * @ManyToMany(fetch = FetchType.LAZY,cascade = { CascadeType.MERGE })
+	 * 
+	 * @JoinTable(name="role_permissions", joinColumns =
+	 * 
+	 * @JoinColumn(name = "roleid"), inverseJoinColumns = @JoinColumn(name =
+	 * "permissionsid")) private Set<Permissions> permissions = new HashSet<>();
+	 */
+	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy =	  "roles") 
+	   private Set<Permissions> permissions = new HashSet<>();
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import com.example.demo.service.PermissionsService;
 
 @RestController
 @RequestMapping("/api/permissions")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PermissionController {
 	
 @Autowired
@@ -26,7 +28,7 @@ PermissionsService permissionsService;
 
 // to create permissions
 @PostMapping("/addpermissions")
-private ResponseEntity<String>createpermissions(@RequestBody RolesDTO permissionsdto){
+private ResponseEntity<String>createpermissions(@RequestBody PermissionsDTO permissionsdto){
 	permissionsService.createpermissions(permissionsdto);	
   return new ResponseEntity<String>("Permissions added succesfully", HttpStatus.CREATED);
       }
@@ -47,9 +49,9 @@ public ResponseEntity<PermissionsDTO> getPermissionsById(@PathVariable ("permiss
      }
 		
   @PutMapping("/updatepermissions") public
-  ResponseEntity<RolesDTO>updatepermissions(@RequestBody RolesDTO  rolesdto ){ 
-	  permissionsService.updatepermissions(rolesdto);
-  return new ResponseEntity<RolesDTO>(rolesdto,HttpStatus.OK); }
+  ResponseEntity<String>updatepermissions(@RequestBody PermissionsDTO  permissionsdto ){ 
+	  permissionsService.updatepermissions(permissionsdto);
+  return new ResponseEntity<String>("Update Succesfully",HttpStatus.OK); }
 		 
 
 

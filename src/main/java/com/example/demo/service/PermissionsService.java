@@ -4,16 +4,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.dto.PermissionsDTO;
-import com.example.demo.dto.RolesDTO;
 import com.example.demo.entity.Permissions;
-import com.example.demo.entity.Roles;
 import com.example.demo.entity.Status;
 import com.example.demo.repository.PermissionsRepo;
 import com.example.demo.repository.RoleRepo;
@@ -27,22 +23,15 @@ public class PermissionsService {
 	@Autowired
 	ModelMapper modelMapper;
 
- public void createpermissions(RolesDTO rolesdto) {		 
-  Optional <Roles> role = roleRepo.findById(rolesdto.getId());
-  if(role.isPresent()){
-  List<Permissions> permissions= modelMapper.map(rolesdto.getPermissions(),new TypeToken<List<Permissions>>() {}.getType() );
-     permissions.stream().forEach(perm->{			
-			  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-			  LocalDateTime now = LocalDateTime.now(); 
-			  perm.setCreated_at(dtf.format(now));
-			  perm.setUpdated_at(dtf.format(now));
-			  perm.setStatus(Status.active);			 
-     });
-     role.get().getPermissions().addAll(permissions);	 
-     roleRepo.save(role.get()); 
-
-  }
-	  
+ public void createpermissions(PermissionsDTO permissonsdto) {
+	    Permissions permissions = modelMapper.map(permissonsdto, Permissions.class);
+	    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"); 
+		LocalDateTime now = LocalDateTime.now();
+		permissions.setCreated_at(dtf.format(now));
+		permissions.setUpdated_at(dtf.format(now));
+		permissions.setStatus(Status.active);
+	    permissionsRepo.save(permissions);
+		  
     }
 
 	public List<PermissionsDTO> getAllPermissions() {
@@ -72,30 +61,23 @@ public class PermissionsService {
 		return null;
 	}
 
-	public void updatepermissions (RolesDTO rolesdto) {
-	//Roles rolesEntity = modelMapper.map(rolesdto, Roles.class);
-	Optional<Roles> roleoptional = roleRepo.findById(rolesdto.getId());	
-	if(roleoptional.isPresent()) {
-		Roles roles = roleoptional.get();
-		rolesdto.getPermissions().forEach(permissionsdto->{
-		Optional<Permissions>permissions = roles.getPermissions().stream().filter(perm->
-		perm.getId().equals(permissionsdto.getId())).findAny();	
-			permissions.get().setDescription(permissionsdto.getDescription());
-			permissions.get().setTitle(permissionsdto.getTitle());
-			permissions.get().setStatus(Status.active);
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-			LocalDateTime now = LocalDateTime.now(); 
-			permissions.get().setUpdated_at(dtf.format(now));
-			roleRepo.save(roles);
-		});
+	public String updatepermissions (PermissionsDTO permissionsdto) {
+		Permissions permission=modelMapper.map(permissionsdto,Permissions.class);
+			Optional<Permissions> permissions = permissionsRepo.findById(permissionsdto.getId());
+			
+			 if(!permissions.isEmpty()&&permissions.isPresent()) {				
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"); 
+				LocalDateTime now = LocalDateTime.now();
+				permission.setStatus(Status.active);
+				permission.setCreated_at(dtf.format(now));
+				permission.setUpdated_at(dtf.format(now));
+				permissionsRepo.save(permission);
+				 return "Update Succesfully";
+			 }
+			 return "Not update";
+
 		
-	}
-		
-		
-		
-		
-	}
-	
-	
-	
-}
+	}		
+	   }
+			
+  
