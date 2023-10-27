@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.PermissionsDTO;
-import com.example.demo.dto.RolesDTO;
 import com.example.demo.service.PermissionsService;
 
 @RestController
@@ -32,31 +30,28 @@ private ResponseEntity<String>createpermissions(@RequestBody PermissionsDTO perm
 	permissionsService.createpermissions(permissionsdto);	
   return new ResponseEntity<String>("Permissions added succesfully", HttpStatus.CREATED);
       }
-
+//to getAll permissions
 @GetMapping("/getallpermissions")
 public  List<PermissionsDTO> getAllPermissions() {
 	return permissionsService.getAllPermissions();
      }
+//to delete permissions
 @DeleteMapping("/deletepermissions/{id}")
 public String deletepermissions(@PathVariable("id")int id) {
 	permissionsService.deletepermissionById(id);
 	 return "Successfully Deleted";
      }
+// to view permissions by id
 @GetMapping("/permissions/{permissionsid}")
 public ResponseEntity<PermissionsDTO> getPermissionsById(@PathVariable ("permissionsid") Integer permissionsid) {
 	PermissionsDTO permissionsdto= permissionsService.getPermissionsById(permissionsid);
 	 return new ResponseEntity<PermissionsDTO>(permissionsdto,HttpStatus.OK);
      }
-		
+// to update permissions	
   @PutMapping("/updatepermissions") public
   ResponseEntity<String>updatepermissions(@RequestBody PermissionsDTO  permissionsdto ){ 
 	  permissionsService.updatepermissions(permissionsdto);
   return new ResponseEntity<String>("Update Succesfully",HttpStatus.OK); }
 		 
-
-
-
-
-
  }
 

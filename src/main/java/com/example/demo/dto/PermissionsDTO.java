@@ -1,7 +1,5 @@
 package com.example.demo.dto;
 
-import java.util.Set;
-
 import com.example.demo.entity.Status;
 import lombok.Data;
 
@@ -15,5 +13,5 @@ public class PermissionsDTO {
 	private Status status;
 	private String created_at;
 	private String updated_at;
-	private Set<RolesDTO>roles;
+	
 }

@@ -29,15 +29,6 @@ public class UserDetail {
 	@Enumerated(EnumType.STRING)
 	private Status status;
 	
-	
-	
-	/*
-	 * @ManyToMany(fetch = FetchType.LAZY,cascade = { CascadeType.ALL })
-	 * 
-	 * @JoinTable(name="userDetails_roles", joinColumns = @JoinColumn(name =
-	 * "userdetailsid"), inverseJoinColumns = @JoinColumn(name = "roleid")) private
-	 * Set<Roles> roles = new HashSet<>();
-	 */
 		
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="role_id", referencedColumnName="id")

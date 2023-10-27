@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.demo.dto.PermissionsDTO;
 import com.example.demo.dto.RolesDTO;
 import com.example.demo.service.RolesService;
 
@@ -28,8 +26,8 @@ public class RoleController {
 RolesService roleService;	
  // to add role
 @PostMapping("/addrole")	
-public ResponseEntity<String>createuser(@RequestBody PermissionsDTO permissionsdto){
-	//roleService.createrole(permissionsdto);
+public ResponseEntity<String>createuser(@RequestBody RolesDTO rolesdto){
+	roleService.createrole(rolesdto);
 	return new ResponseEntity<String>(HttpStatus.CREATED);
     }
 //to get all role
@@ -51,8 +49,8 @@ public ResponseEntity<RolesDTO> getRoleById(@PathVariable Integer id){
     }
 //to update role
 @PutMapping("/updaterole")
-public ResponseEntity<RolesDTO> updateRole( @RequestBody  RolesDTO role){
-	 //roleService.updaterole(role);
+public ResponseEntity<RolesDTO> updateRole( @RequestBody  RolesDTO roledto){
+	 roleService.updateRole(roledto);
     return new ResponseEntity<RolesDTO>(HttpStatus.OK);
     }
 // to delete role

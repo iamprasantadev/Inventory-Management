@@ -15,5 +15,5 @@ public class RolesDTO {
 	private String created_at;
 	private String update_at;
 	private Status status;
-	//private Set<PermissionsDTO> permissions;
+	private Set<PermissionsDTO> permissions;
  }

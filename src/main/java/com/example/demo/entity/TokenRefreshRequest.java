@@ -1,9 +1,7 @@
 package com.example.demo.entity;
 
 import java.time.Instant;
-
 import javax.validation.constraints.NotBlank;
-
 import lombok.Data;
 
 @Data

@@ -36,7 +36,10 @@ public class UserDetailsService {
     RoleRepo rolesRepo;
     public static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsService.class);
     
-      public void createuser(UserDTO userdto){    	  
+      public void createuser(UserDTO userdto){ 
+    	  try {
+    		  LOGGER.info("Create User");
+    	  
    	  User user = modelMapper.map(userdto, User.class);   	       
       	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 	    LocalDateTime now = LocalDateTime.now();  
@@ -50,26 +53,38 @@ public class UserDetailsService {
     	user.getUserDetail().setCreated_at(dtf.format(now));
     	user.getUserDetail().setUpdate_at(dtf.format(now));
         userRepo.save(user);
-    	  }
+               }catch(Exception ex) {
+   	    	   ex.printStackTrace();
+   	    	    LOGGER.error(ex.getMessage());
+   	    	}      }
       	   
-    	public  List<UserDTO> getAllUserdetail(){    			    		
+    	public  List<UserDTO> getAllUserdetail(){
+    		try {
+    			LOGGER.info("GetAll User");
    		List<User> UserdetailList = userRepo.findAll();	
     		List<UserDTO> userdetailDTOList= modelMapper.map(UserdetailList,new TypeToken<List<UserDTO>>(){}.getType());    	     
     		for(UserDTO dto:userdetailDTOList) {
     			dto.getUserDetail().setTitle(UserdetailList.stream()
     					.filter(user->user.getUserDetail().getId()==dto.getUserDetail().getId())
     					.findAny().get().getUserDetail().getRoles().getTitle());
-   		     }        
-    		  return userdetailDTOList;     				
+   		     } return userdetailDTOList;
+   		     } catch(Exception ex) {
+     	    	   ex.printStackTrace();
+      	    	    LOGGER.error(ex.getMessage());   				
+    		   }return null;
     		   }
     	
     	public UserDetailDTO getUserdetailsById(Integer id) {
+    		try {
+    			LOGGER.info("View User By Id");
     		 Optional<UserDetail> user=userDetailsRepo.findById(id);
     		     if(user.isPresent()) {
     		    	 UserDetailDTO userdto= modelMapper.map(user,UserDetailDTO.class);	 
     			  return userdto;
-    		     }
-    		 return null;
+    		     } } catch(Exception ex) {
+       	    	   ex.printStackTrace();
+     	    	    LOGGER.error(ex.getMessage());
+    		     } return null;
     	     }
     			
    	public UserDTO updateuser( UserDTO userDTO) {
@@ -116,8 +131,9 @@ public class UserDetailsService {
     	 
     	 
     	 public List<UserDTO> getAllActiveUsers() {
+    		 try {
+    			 LOGGER.info("Get All Active User");
     		    List<User> users = userRepo.findAll();
-
     		    return users.stream()
     		            .filter(user -> user.getUserDetail().getStatus() == Status.active)
     		            .map(user -> {
@@ -125,7 +141,11 @@ public class UserDetailsService {
     		                userDTO.getUserDetail().setTitle(user.getUserDetail().getRoles().getTitle());
     		                return userDTO;
     		            })
-    		            .collect(Collectors.toList());
-    		}
+    		            .collect(Collectors.toList());}catch(Exception ex) {
+    		       	    	ex.printStackTrace();
+    		       	    	LOGGER.error(ex.getMessage());
+    		       	    }
+			return null;
+    		 }
 
 }

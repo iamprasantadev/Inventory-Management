@@ -12,7 +12,6 @@ import com.example.demo.dto.UserDTO;
 import com.example.demo.entity.Roles;
 import com.example.demo.entity.Status;
 import com.example.demo.entity.User;
-import com.example.demo.entity.UserDetail;
 import com.example.demo.repository.RoleRepo;
 import com.example.demo.repository.UserRepo;
 @Service

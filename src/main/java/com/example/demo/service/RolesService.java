@@ -2,20 +2,17 @@ package com.example.demo.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.example.demo.dto.PermissionsDTO;
 import com.example.demo.dto.RolesDTO;
 import com.example.demo.entity.Permissions;
 import com.example.demo.entity.Roles;
@@ -33,51 +30,36 @@ RoleRepo roleRepo;
 ModelMapper modelMapper;
 @Autowired
 PermissionsRepo permissionsRepo;
-
+public static final Logger LOGGER = LoggerFactory.getLogger(RolesService.class);
 //PropertyMap<RolesDTO,Roles>skipModifiedFieldsMap=new PropertyMap<RolesDTO,Roles>(){
 //	protected void configure() {
 //		skip().setPermissions(null);
 //	}
 //};
 
-public void createrole(RolesDTO rolesDTO){	
-//	Optional<Permissions>permissions =permissionsRepo.findById(permissionsdto.getId());
-//	if(permissions.isPresent()) {
-//		List<Roles>role = modelMapper.map(permissionsdto.getRoles(),new TypeToken<List<Roles>>() {}.getType());
-//		role.stream().forEach(rol->{
-//			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-//			LocalDateTime now = LocalDateTime.now();	
-//			rol.setCreated_at(dtf.format(now));
-//			rol.setUpdate_at(dtf.format(now));
-//			rol.setStatus(Status.active);
-//		});
-//		permissions.get().getRoles().addAll(role);
-//		permissionsRepo.save(permissions.get());
-//	}
-	
+public void createrole(RolesDTO rolesDTO){
+	try {
+		LOGGER.info("Create Role");
 	Roles newRole = new Roles();
     newRole.setTitle(rolesDTO.getTitle());
     newRole.setDescription(rolesDTO.getDescription());
-
-    // Create a set of Permissions by fetching them using their IDs
-    //Set<Permissions> permissions = rolesDTO.getPermissions()
+    newRole.setStatus(Status.active);
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+	LocalDateTime now = LocalDateTime.now();
+	newRole.setCreated_at(dtf.format(now));
+	newRole.setUpdate_at(dtf.format(now));
+    Set<Permissions> permissions = rolesDTO.getPermissions()
         .stream()
         .map(permissionDTO -> permissionsRepo.findById(permissionDTO.getId())
             .orElse(null))
         .filter(Objects::nonNull)
         .collect(Collectors.toSet());
-
-    newRole.setPermissions(permissions);
-
-    // Save the new role
-    roleRepo.save(newRole);
-
-    //return "Role created";
-}
-
-	
-
- 
+    newRole.setPermissions(permissions); 
+    roleRepo.save(newRole); 
+    }catch(Exception ex) {
+    	   ex.printStackTrace();
+	    	    LOGGER.error(ex.getMessage());  
+ }  }
 	 
   public  List<RolesDTO> getAllRoles(Integer id){
   Optional<Permissions> permissionsoptional = permissionsRepo.findById(id);
@@ -87,10 +69,7 @@ public void createrole(RolesDTO rolesDTO){
 		 List<RolesDTO> roledtoList= modelMapper.map(roleList,new TypeToken<List<RolesDTO>>() {}.getType() );
 		 return roledtoList;
 	 }
-	//List<Roles>roleList = roleRepo.findAll();	
-	//List<RolesDTO> roledtoList= modelMapper.map(roleList,new TypeToken<List<RolesDTO>>() {}.getType() );
-    // return roledtoList;
-	//return null;
+	
 	return null;
      } 
    public List<RolesDTO>getAllRoles(){
@@ -108,21 +87,30 @@ public void createrole(RolesDTO rolesDTO){
 		 return null;
 	     }
 			
-	public String updaterole(RolesDTO rolesDTO) {
+	public String updateRole(RolesDTO rolesDTO) {
 	    Optional<Roles> roleOptional = roleRepo.findById(rolesDTO.getId());
-
-	    if (roleOptional.isPresent()) {
-	        Roles role = roleOptional.get();
-	        modelMapper.map(rolesDTO, role);
-           DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-			LocalDateTime now = LocalDateTime.now();
-			role.setUpdate_at(dtf.format(now));		
-			roleRepo.save(role);
-			return "Role Update Succesfully";
-	}	
-	    return "Role not updated ";
 	    
-	    }
+	    if (!roleOptional.isPresent()) {	        
+	    }	    
+	    Roles role = roleOptional.get();	    
+	    role.setTitle(rolesDTO.getTitle());
+	    role.setDescription(rolesDTO.getDescription());
+	    role.setStatus(Status.active);
+	    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		LocalDateTime now = LocalDateTime.now();
+		role.setUpdate_at(dtf.format(now));
+	    Set<Permissions> permissions = rolesDTO.getPermissions()
+	            .stream()
+	            .map(permissionDTO -> permissionsRepo.findById(permissionDTO.getId())
+	                .orElse(null))
+	            .filter(Objects::nonNull)
+	            .collect(Collectors.toSet());
+	        role.setPermissions(permissions); 
+	    roleRepo.save(role);
+	    
+	    return "Role updated successfully";
+	}
+	
 	  
 			  
 			  	     
@@ -135,27 +123,10 @@ public void createrole(RolesDTO rolesDTO){
 	    }else
 	  	  return "User already marked as a inactive";
 	    }   
-//	public void updaterole(RolesDTO rolesDTO) {
-//		Optional<Roles> roleoptional = roleRepo.findById(rolesDTO.getId());	
-//		if(roleoptional.isPresent()) {
-//			Roles roles = roleoptional.get();
-//			roles.setTitle(rolesDTO.getTitle());
-//			roles.setDescription(rolesDTO.getDescription());
-//			rolesDTO.getPermissions().forEach(permissionsdto->{
-//			//Optional<Permissions>permissions = roles.getPermissions().stream().filter(perm->
-//			perm.getId().equals(permissionsdto.getId())).findAny();	
-//			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-//			LocalDateTime now = LocalDateTime.now(); 
-//			permissions.get().setUpdated_at(dtf.format(now));
-//				roleRepo.save(roles);
-//			});
+
 			
-		//}
-			
-			
-			
-			
+						
 		}
 		
 	
-//}
+

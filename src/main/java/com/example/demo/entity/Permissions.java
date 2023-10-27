@@ -11,12 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,17 +32,10 @@ public class Permissions {
 	private Status status;
 	private String created_at;
 	private String updated_at;
-	/*
-	 * @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy =
-	 * "permissions") private Set<Roles> roles = new HashSet<>();
-	 */
-   
-   @ManyToMany(fetch = FetchType.LAZY,cascade = {
-			CascadeType.MERGE
-	})
-	@JoinTable(name="permissions_role", joinColumns =
-	@JoinColumn(name = "permissionsid"), inverseJoinColumns = @JoinColumn(name = "roleid"))
+	
+	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy ="permissions")
 	private Set<Roles> roles = new HashSet<>();
-		 
 	 
+   
+		
 }
