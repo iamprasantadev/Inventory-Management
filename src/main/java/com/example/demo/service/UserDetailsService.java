@@ -12,6 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserDetailDTO;
 import com.example.demo.entity.Roles;
@@ -36,9 +40,10 @@ public class UserDetailsService {
     RoleRepo rolesRepo;
     public static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsService.class);
     
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED)
       public void createuser(UserDTO userdto){ 
     	  try {
-    		  LOGGER.info("Create User");
+    		  LOGGER.debug("Inside createuser::"+userdto.toString());
     	  
    	  User user = modelMapper.map(userdto, User.class);   	       
       	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
@@ -53,9 +58,10 @@ public class UserDetailsService {
     	user.getUserDetail().setCreated_at(dtf.format(now));
     	user.getUserDetail().setUpdate_at(dtf.format(now));
         userRepo.save(user);
+        LOGGER.debug("Completed createuser");
                }catch(Exception ex) {
    	    	   ex.printStackTrace();
-   	    	    LOGGER.error(ex.getMessage());
+   	    	    LOGGER.debug("Exception in createuser::"+ex.getMessage());
    	    	}      }
       	   
     	public  List<UserDTO> getAllUserdetail(){
@@ -86,10 +92,10 @@ public class UserDetailsService {
      	    	    LOGGER.error(ex.getMessage());
     		     } return null;
     	     }
-    			
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED)			
    	public UserDTO updateuser( UserDTO userDTO) {
    		try {
-   			LOGGER.info("Update BY Id");
+   			LOGGER.debug("Inside updateuser::"+userDTO.toString());
    		User userEntity = modelMapper.map(userDTO,User.class);
     	Optional<User> userOptional = userRepo.findById(userDTO.getUserid());
     	 if(userOptional.isPresent()) {
@@ -104,27 +110,29 @@ public class UserDetailsService {
     		 user.getUserDetail().setUpdate_at(dtf.format(now));
     		 user.setPassword(passwordEncoder.encode(user.getPassword()));
     		 user.getUserDetail().setStatus(Status.active);
-    		 user=userRepo.save(user); 
+    		 user=userRepo.save(user);
+    		 LOGGER.debug("Completed updateuser");
     		 userDTO=modelMapper.map(user, UserDTO.class);
     		 return userDTO; 
     	 }           }catch(Exception ex) {
     	   	    	ex.printStackTrace();
-    	   	    	LOGGER.error(ex.getMessage());	 		
+    	   	    	LOGGER.debug("Exception in updateuser"+ex.getMessage());	 		
     	 } return null;		
    	}
-   			
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED)	
     	 public String deleteUserById( Integer id) {
     		 try {
-    	 LOGGER.info("Inactive User By Id");
+    	 LOGGER.debug("Inside inactiveuser");
    		  Optional<UserDetail> user = userDetailsRepo.findById(id);		  
    	   if(user.isPresent()) {
    		   user.get().setStatus(Status.inactive);
-   		userDetailsRepo.save(user.get());	    	
+   		userDetailsRepo.save(user.get());
+   		LOGGER.debug("Completed inactiveuser");
    	    	return "Successfully Deleted";	    	
    	  	  }	   
    	    }catch(Exception ex) {
    	    	ex.printStackTrace();
-   	    	LOGGER.error(ex.getMessage());
+   	    	LOGGER.debug("Exception in inactiveuser::"+ex.getMessage());
    	    }
     		 return "User could not be found";
      }

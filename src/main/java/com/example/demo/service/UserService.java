@@ -5,9 +5,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.UUID;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entity.Roles;
 import com.example.demo.entity.Status;
@@ -27,12 +33,14 @@ public class UserService {
 	ModelMapper modelMapper;
 	
 	private static final long EXPIRE_TOKEN_AFTER_MINUTES = 60;
-	
+	public static final Logger LOGGER = LoggerFactory.getLogger(RolesService.class);
 	public Boolean existsByUsername(String username) {
 		return userRepo.existsByUsername(username);
 	}
-	
-	 public User saveUser(UserDTO userdto) {			
+	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED)	
+	 public User saveUser(UserDTO userdto) {
+		try {
+		LOGGER.debug("Inside userregistration::"+userdto.toString());
 			  User user= modelMapper.map(userdto, User.class);
 			  user.getUserDetail().setStatus(Status.active); 
 			  Roles role=roleRepo.findByTitle("Admin"); 
@@ -45,6 +53,10 @@ public class UserService {
      		  user.getUserDetail().setCreated_at(dtf.format(now));
      		  user.getUserDetail().setUpdate_at(dtf.format(now));
 	        return  userRepo.save(user);
+		}catch(Exception ex) {
+			LOGGER.debug("Exception in registrionuser::"+ex.getMessage());
+		}
+		return null;
 	    }
 	 
 		/*

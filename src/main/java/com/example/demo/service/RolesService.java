@@ -13,6 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.demo.dto.RolesDTO;
 import com.example.demo.entity.Permissions;
 import com.example.demo.entity.Roles;
@@ -36,10 +40,10 @@ public static final Logger LOGGER = LoggerFactory.getLogger(RolesService.class);
 //		skip().setPermissions(null);
 //	}
 //};
-
+@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED)
 public void createrole(RolesDTO rolesDTO){
 	try {
-		LOGGER.info("Create Role");
+		LOGGER.debug("Inside createrole::"+rolesDTO.toString());
 	Roles newRole = new Roles();
     newRole.setTitle(rolesDTO.getTitle());
     newRole.setDescription(rolesDTO.getDescription());
@@ -56,42 +60,60 @@ public void createrole(RolesDTO rolesDTO){
         .collect(Collectors.toSet());
     newRole.setPermissions(permissions); 
     roleRepo.save(newRole); 
+    LOGGER.debug("Completed createrole");
     }catch(Exception ex) {
-    	   ex.printStackTrace();
-	    	    LOGGER.error(ex.getMessage());  
+	    	    LOGGER.debug("Exception in createrole::"+ex.getMessage());  
  }  }
 	 
   public  List<RolesDTO> getAllRoles(Integer id){
-  Optional<Permissions> permissionsoptional = permissionsRepo.findById(id);
+	  try {
+           LOGGER.info("Get All Roles By Permissions");
+	Optional<Permissions> permissionsoptional = permissionsRepo.findById(id);
 	 if(permissionsoptional.isPresent()) {	
 		 Permissions permissions = permissionsoptional.get();
 		 Set<Roles>roleList =permissions.getRoles(); 
 		 List<RolesDTO> roledtoList= modelMapper.map(roleList,new TypeToken<List<RolesDTO>>() {}.getType() );
 		 return roledtoList;
-	 }
-	
-	return null;
-     } 
+	 }} catch(Exception ex) {
+   	   ex.printStackTrace();
+ 	    LOGGER.error(ex.getMessage());	
+	 }return null;
+       } 
+  
    public List<RolesDTO>getAllRoles(){
+	   try {
+		   LOGGER.info("Get All Roles");
 	List<Roles>roleList = roleRepo.findAll();	
 	List<RolesDTO> roledtoList= modelMapper.map(roleList,new TypeToken<List<RolesDTO>>() {}.getType() );
 	return roledtoList; 
-   }
-   
+   }catch(Exception ex) {
+   	   ex.printStackTrace();
+ 	    LOGGER.error(ex.getMessage());	
+   } return null;
+      }
+
 	public RolesDTO getRolesById(Integer id) {
+		try {
+			LOGGER.debug("Get Roles BY ID");
+			
 		 Optional<Roles> roles=roleRepo.findById(id);
 		     if(roles.isPresent()) {
 		    	 RolesDTO rolesdto= modelMapper.map(roles,RolesDTO.class);	 
 			  return rolesdto;
-		     }
-		 return null;
-	     }
-			
+		        }
+		     }catch(Exception ex) {
+		     	   ex.printStackTrace();
+		    	    LOGGER.error(ex.getMessage());
+	     }	return null;
+		   }
+   @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED)
 	public String updateRole(RolesDTO rolesDTO) {
-	    Optional<Roles> roleOptional = roleRepo.findById(rolesDTO.getId());
-	    
-	    if (!roleOptional.isPresent()) {	        
-	    }	    
+	   try {
+	   LOGGER.debug("Inside updeterole::"+rolesDTO.toString());
+	    Optional<Roles> roleOptional = roleRepo.findById(rolesDTO.getId());	    
+	    if (!roleOptional.isPresent()) {
+	    	return "role not exist";
+	    }	    	
 	    Roles role = roleOptional.get();	    
 	    role.setTitle(rolesDTO.getTitle());
 	    role.setDescription(rolesDTO.getDescription());
@@ -106,27 +128,32 @@ public void createrole(RolesDTO rolesDTO){
 	            .filter(Objects::nonNull)
 	            .collect(Collectors.toSet());
 	        role.setPermissions(permissions); 
-	    roleRepo.save(role);
-	    
+	    roleRepo.save(role);	    
 	    return "Role updated successfully";
+	   }catch(Exception ex) {
+		   LOGGER.debug("Exception in updaterole::"+ex.getMessage());
+	   }
+	return "Role not update";
 	}
 	
 	  
 			  
-			  	     
+@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED)				  	     
 	public String inactiveRolesById( Integer id) {
+	try {
+	LOGGER.debug("Inside inactive Role");
 	    Optional<Roles> roles = roleRepo.findById(id);
 	    if(roles.isPresent()) {
 	    	roles.get().setStatus(Status.inactive);
 	    	roleRepo.save(roles.get());
+	    	LOGGER.debug("Completed inactive Role");
 	  	  return "Successfully Inactive";
-	    }else
+	    }}catch(Exception ex) {
+	    	LOGGER.debug("Exception in inactive role::"+ex.getMessage());
+	    }
 	  	  return "User already marked as a inactive";
-	    }   
-
-			
-						
-		}
+	    }			
+		  }
 		
 	
 

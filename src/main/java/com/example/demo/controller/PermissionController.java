@@ -20,38 +20,42 @@ import com.example.demo.service.PermissionsService;
 @RequestMapping("/api/permissions")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PermissionController {
-	
-@Autowired
-PermissionsService permissionsService;
+
+	@Autowired
+	PermissionsService permissionsService;
 
 // to create permissions
-@PostMapping("/addpermissions")
-private ResponseEntity<String>createpermissions(@RequestBody PermissionsDTO permissionsdto){
-	permissionsService.createpermissions(permissionsdto);	
-  return new ResponseEntity<String>("Permissions added succesfully", HttpStatus.CREATED);
-      }
-//to getAll permissions
-@GetMapping("/getallpermissions")
-public  List<PermissionsDTO> getAllPermissions() {
-	return permissionsService.getAllPermissions();
-     }
-//to delete permissions
-@DeleteMapping("/deletepermissions/{id}")
-public String deletepermissions(@PathVariable("id")int id) {
-	permissionsService.deletepermissionById(id);
-	 return "Successfully Deleted";
-     }
-// to view permissions by id
-@GetMapping("/permissions/{permissionsid}")
-public ResponseEntity<PermissionsDTO> getPermissionsById(@PathVariable ("permissionsid") Integer permissionsid) {
-	PermissionsDTO permissionsdto= permissionsService.getPermissionsById(permissionsid);
-	 return new ResponseEntity<PermissionsDTO>(permissionsdto,HttpStatus.OK);
-     }
-// to update permissions	
-  @PutMapping("/updatepermissions") public
-  ResponseEntity<String>updatepermissions(@RequestBody PermissionsDTO  permissionsdto ){ 
-	  permissionsService.updatepermissions(permissionsdto);
-  return new ResponseEntity<String>("Update Succesfully",HttpStatus.OK); }
-		 
- }
+	@PostMapping("/addpermissions")
+	private ResponseEntity<String> createpermissions(@RequestBody PermissionsDTO permissionsdto) {
+		permissionsService.createPermissions(permissionsdto);
+		return new ResponseEntity<String>("Permissions added succesfully", HttpStatus.CREATED);
+	}
 
+//to getAll permissions
+	@GetMapping("/getallpermissions")
+	public List<PermissionsDTO> getAllPermissions() {
+		return permissionsService.getAllPermissions();
+	}
+
+//to delete permissions
+	@DeleteMapping("/deletepermissions/{id}")
+	public String deletepermissions(@PathVariable("id") int id) {
+		permissionsService.deletepermissionById(id);
+		return "Successfully Deleted";
+	}
+
+// to view permissions by id
+	@GetMapping("/permissions/{permissionsid}")
+	public ResponseEntity<PermissionsDTO> getPermissionsById(@PathVariable("permissionsid") Integer permissionsid) {
+		PermissionsDTO permissionsdto = permissionsService.getPermissionsById(permissionsid);
+		return new ResponseEntity<PermissionsDTO>(permissionsdto, HttpStatus.OK);
+	}
+
+// to update permissions	
+	@PutMapping("/updatepermissions")
+	public ResponseEntity<String> updatepermissions(@RequestBody PermissionsDTO permissionsdto) {
+		permissionsService.updatepermissions(permissionsdto);
+		return new ResponseEntity<String>("Update Succesfully", HttpStatus.OK);
+	}
+
+}
