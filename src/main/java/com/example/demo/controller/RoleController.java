@@ -59,6 +59,11 @@ public String inactiveRolesById(@PathVariable("id") int id){
    roleService.inactiveRolesById(id);
   return "Successfully Marked as Inactive";
     }
+//to active role
+@GetMapping("/getactiveroles")
+public List<RolesDTO>getAllactiveRole(){
+	return roleService.getallactiveroles();
+    }
 
-	
+
 }

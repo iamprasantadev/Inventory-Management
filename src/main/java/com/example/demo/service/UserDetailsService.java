@@ -38,12 +38,12 @@ public class UserDetailsService {
 	PasswordEncoder passwordEncoder;
     @Autowired
     RoleRepo rolesRepo;
-    public static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsService.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED)
       public void createuser(UserDTO userdto){ 
     	  try {
-    		  LOGGER.debug("Inside createuser::"+userdto.toString());
+    		  logger.debug("Inside createuser::"+userdto.toString());
     	  
    	  User user = modelMapper.map(userdto, User.class);   	       
       	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
@@ -58,15 +58,15 @@ public class UserDetailsService {
     	user.getUserDetail().setCreated_at(dtf.format(now));
     	user.getUserDetail().setUpdate_at(dtf.format(now));
         userRepo.save(user);
-        LOGGER.debug("Completed createuser");
+        logger.debug("Completed createuser");
                }catch(Exception ex) {
    	    	   ex.printStackTrace();
-   	    	    LOGGER.debug("Exception in createuser::"+ex.getMessage());
+   	    	logger.debug("Exception in createuser::"+ex.getMessage());
    	    	}      }
       	   
     	public  List<UserDTO> getAllUserdetail(){
     		try {
-    			LOGGER.info("GetAll User");
+    			logger.info("GetAll User");
    		List<User> UserdetailList = userRepo.findAll();	
     		List<UserDTO> userdetailDTOList= modelMapper.map(UserdetailList,new TypeToken<List<UserDTO>>(){}.getType());    	     
     		for(UserDTO dto:userdetailDTOList) {
@@ -76,26 +76,26 @@ public class UserDetailsService {
    		     } return userdetailDTOList;
    		     } catch(Exception ex) {
      	    	   ex.printStackTrace();
-      	    	    LOGGER.error(ex.getMessage());   				
+     	    	  logger.error(ex.getMessage());   				
     		   }return null;
     		   }
     	
     	public UserDetailDTO getUserdetailsById(Integer id) {
     		try {
-    			LOGGER.info("View User By Id");
+    			logger.info("View User By Id");
     		 Optional<UserDetail> user=userDetailsRepo.findById(id);
     		     if(user.isPresent()) {
     		    	 UserDetailDTO userdto= modelMapper.map(user,UserDetailDTO.class);	 
     			  return userdto;
     		     } } catch(Exception ex) {
        	    	   ex.printStackTrace();
-     	    	    LOGGER.error(ex.getMessage());
+       	    	logger.error(ex.getMessage());
     		     } return null;
     	     }
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED)			
    	public UserDTO updateuser( UserDTO userDTO) {
    		try {
-   			LOGGER.debug("Inside updateuser::"+userDTO.toString());
+   			logger.debug("Inside updateuser::"+userDTO.toString());
    		User userEntity = modelMapper.map(userDTO,User.class);
     	Optional<User> userOptional = userRepo.findById(userDTO.getUserid());
     	 if(userOptional.isPresent()) {
@@ -111,28 +111,28 @@ public class UserDetailsService {
     		 user.setPassword(passwordEncoder.encode(user.getPassword()));
     		 user.getUserDetail().setStatus(Status.active);
     		 user=userRepo.save(user);
-    		 LOGGER.debug("Completed updateuser");
+    		 logger.debug("Completed updateuser");
     		 userDTO=modelMapper.map(user, UserDTO.class);
     		 return userDTO; 
     	 }           }catch(Exception ex) {
     	   	    	ex.printStackTrace();
-    	   	    	LOGGER.debug("Exception in updateuser"+ex.getMessage());	 		
+    	   	    	logger.debug("Exception in updateuser"+ex.getMessage());	 		
     	 } return null;		
    	}
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED)	
     	 public String deleteUserById( Integer id) {
     		 try {
-    	 LOGGER.debug("Inside inactiveuser");
+    	 logger.debug("Inside inactiveuser");
    		  Optional<UserDetail> user = userDetailsRepo.findById(id);		  
    	   if(user.isPresent()) {
    		   user.get().setStatus(Status.inactive);
    		userDetailsRepo.save(user.get());
-   		LOGGER.debug("Completed inactiveuser");
+   		logger.debug("Completed inactiveuser");
    	    	return "Successfully Deleted";	    	
    	  	  }	   
    	    }catch(Exception ex) {
    	    	ex.printStackTrace();
-   	    	LOGGER.debug("Exception in inactiveuser::"+ex.getMessage());
+   	    	logger.debug("Exception in inactiveuser::"+ex.getMessage());
    	    }
     		 return "User could not be found";
      }
@@ -140,7 +140,7 @@ public class UserDetailsService {
     	 
     	 public List<UserDTO> getAllActiveUsers() {
     		 try {
-    			 LOGGER.info("Get All Active User");
+    			 logger.debug("Get All Active User");
     		    List<User> users = userRepo.findAll();
     		    return users.stream()
     		            .filter(user -> user.getUserDetail().getStatus() == Status.active)
@@ -149,9 +149,10 @@ public class UserDetailsService {
     		                userDTO.getUserDetail().setTitle(user.getUserDetail().getRoles().getTitle());
     		                return userDTO;
     		            })
-    		            .collect(Collectors.toList());}catch(Exception ex) {
+    		            .collect(Collectors.toList());
+    		    }catch(Exception ex) {
     		       	    	ex.printStackTrace();
-    		       	    	LOGGER.error(ex.getMessage());
+    		       	    	logger.error(ex.getMessage());
     		       	    }
 			return null;
     		 }

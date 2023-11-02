@@ -33,14 +33,14 @@ public class UserService {
 	ModelMapper modelMapper;
 	
 	private static final long EXPIRE_TOKEN_AFTER_MINUTES = 60;
-	public static final Logger LOGGER = LoggerFactory.getLogger(RolesService.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	public Boolean existsByUsername(String username) {
 		return userRepo.existsByUsername(username);
 	}
 	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED)	
 	 public User saveUser(UserDTO userdto) {
 		try {
-		LOGGER.debug("Inside userregistration::"+userdto.toString());
+			logger.debug("Inside userregistration::"+userdto.toString());
 			  User user= modelMapper.map(userdto, User.class);
 			  user.getUserDetail().setStatus(Status.active); 
 			  Roles role=roleRepo.findByTitle("Admin"); 
@@ -54,7 +54,7 @@ public class UserService {
      		  user.getUserDetail().setUpdate_at(dtf.format(now));
 	        return  userRepo.save(user);
 		}catch(Exception ex) {
-			LOGGER.debug("Exception in registrionuser::"+ex.getMessage());
+			logger.debug("Exception in registrionuser::"+ex.getMessage());
 		}
 		return null;
 	    }
