@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,34 +38,23 @@ public class AuthController {
 	@Autowired
 	JwtUtils jwtUtils;
 	
-//	@Autowired
-//	RefreshTokenService refreshTokenService;
-	
 	@Autowired
 	UserService userService;
 	
 	
 	@PostMapping("/signup")
-	public ResponseEntity<MessageResponse> saveDeveloper(@RequestBody UserDTO userdto) {
-		
+	public ResponseEntity<MessageResponse> saveDeveloper(@RequestBody UserDTO userdto) {		
 		if (userService.existsByUsername(userdto.getUsername())){
 		      return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
 		      }
-
 		userService.saveUser(userdto);
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 
 	}
 
-	/*
-	 * @PostMapping("/lastlogin") public ResponseEntity<?>
-	 * saveLastLogin(@RequestBody UserDTO userDTO) { userService.lastLogin(userDTO);
-	 * return new ResponseEntity(HttpStatus.OK); }
-	 */	
 	
 	@PostMapping("/signin")
-	public ResponseEntity<UserInfoResponse> authenticateUser(@Valid@RequestBody UserDTO userDTO) {
-		
+	public ResponseEntity<UserInfoResponse> authenticateUser(@Valid@RequestBody UserDTO userDTO) {		
 		Authentication authentication = authenticationManager
 		        .authenticate(new UsernamePasswordAuthenticationToken(userDTO.getUsername(), userDTO.getPassword()));	
 		SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -73,43 +63,27 @@ public class AuthController {
 		return ResponseEntity.ok().body( new UserInfoResponse(userDetails.getUserid(),
                 userDetails.getUsername(),jwt));
 	}
-	/*
-	 * @PostMapping("/refreshtoken") public ResponseEntity<?>
-	 * refreshtoken(@RequestBody Map<String, String> refreshToken) { RefreshToken
-	 * token = refreshTokenService.findByToken(refreshToken.get("token"));
-	 * 
-	 * if(token != null && refreshTokenService.verifyExpiration(token) != null) {
-	 * User user = token.getUser(); Map<String, Object> claims = new HashMap<>();
-	 * //claims.put("ROLES", user.getRoles().stream().map(item ->
-	 * item.getRole()).collect(Collectors.toList())); String jwt =
-	 * jwtUtils.createToken(claims, user.getUsername());
-	 * 
-	 * return ResponseEntity.ok(new TokenRefreshResponse("Bearer", jwt,
-	 * refreshToken.get("token"))); }
-	 * 
-	 * return ResponseEntity.badRequest().body("Refresh token expired!"); }
-	 */
 	
 	
 	@PostMapping("/signout")
 	public ResponseEntity<?> logoutUser() {
-		ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
-		return ResponseEntity.ok().body(cookie.toString());
-		
+	ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
+	return ResponseEntity.ok().body(cookie.toString());		
 	       }
 	
 	@PostMapping("/forgotpassword")
 	public ResponseEntity<UUID> forgotPassword(@RequestBody UserDTO userDTO) {
 	UUID generatedUuid=userService.forgotpassword(userDTO);
 	return new ResponseEntity<UUID>(generatedUuid,HttpStatus.OK);	       
-}
+           }
 	
-/*
- * @DeleteMapping("/deleteuser/{id}") public ResponseEntity<String>
- * deleteUser(@PathVariable("id") int id) { String
- * msg=userService.deleteUserById(id); return new
- * ResponseEntity<String>(msg,HttpStatus.OK); }
- */
+	@PutMapping("/updatepassword")
+	public String updatePassword(@RequestBody UserDTO userDTO) {
+	userService.updatePassword(userDTO);
+	return "Password ResetSuccessfully";
+	     }
+
+
 	}
 
 

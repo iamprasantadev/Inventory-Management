@@ -52,36 +52,19 @@ public class UserService {
      		  user.setUpdate_at(dtf.format(now));
      		  user.getUserDetail().setCreated_at(dtf.format(now));
      		  user.getUserDetail().setUpdate_at(dtf.format(now));
-	        return  userRepo.save(user);
+	          return  userRepo.save(user);
 		}catch(Exception ex) {
 			logger.debug("Exception in registrionuser::"+ex.getMessage());
 		}
 		return null;
 	    }
-	 
-		/*
-		 * public void lastLogin(UserDTO userDTO) { //User
-		 * user=userRepo.findByUserid(userDTO.getUserid()); User user=null;
-		 * if(user!=null) { DateTimeFormatter dtf =
-		 * DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"); LocalDateTime now =
-		 * LocalDateTime.now(); user.setLastlogin(dtf.format(now)); userRepo.save(user);
-		 * }
-		 */
-
-    	
-	 //}
-	 
-
-
-	 
-	 
+	 	 
 	 public UUID forgotpassword(UserDTO userDTO) {
 		 Optional<User> userOptional=Optional.ofNullable(userRepo.findByUsername(userDTO.getUsername()));
 		 if(userOptional.isPresent()) {
 			 User user=userOptional.get();
 			 UUID uuid = UUID.randomUUID();
-			 user.setCode(uuid);
-			 
+			 user.setCode(uuid);			 
 			 userRepo.save(user);
 			 return uuid;
 		 }else {
@@ -93,22 +76,15 @@ public class UserService {
 		 User user=userRepo.findByUsername(userDTO.getUsername());
 		 if(user!=null) {
 			 UUID previousUUID=user.getCode();
-			 String currentUUID=userDTO.getCode();
-			 
+			 String currentUUID=userDTO.getCode();			 
 			 if(previousUUID != null && previousUUID.toString().equals(currentUUID.toString())) {
 				 user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 				 userRepo.save(user);
-			 }
-		 }
-	 }
+			  }
+		  }
+	  }
 
-		/*
-		 * public String deleteUserById( Integer id) { Optional<User> user =
-		 * userRepo.findById(id); if(user.isPresent()) {
-		 * user.get().getUserDetail().setStatus(Status.inactive);
-		 * userRepo.save(user.get()); return "Successfully Deleted"; } return
-		 * "User could not be found"; }
-		 */
+	
       }
 
 	 
